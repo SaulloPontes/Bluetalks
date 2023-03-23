@@ -5,3 +5,27 @@
     list-style: none;
     border: 0
 }
+
+body {
+    height: 100vh;
+}
+
+.header {
+    width: 100%;
+    position: fixed;
+}
+
+.main-content {
+    padding: 106px 0 0 0;
+    width: 100vw;
+    height: 100vh;
+}
+
+.my-left-bar {
+    max-width: 330px
+}
+
+.home-content {
+    margin: 36px 0;
+    padding: 0 26px;
+}
