@@ -14,13 +14,13 @@
     <link rel="stylesheet" href="./Css/Login.css" />
   </head>
   <body class="h-100 p-3 d-flex align-items-center">
-      <div class="main-container container-fluid col-10 d-flex align-items-center justify-content-center">
+      <div class="main-container container-fluid col-6 d-flex align-items-center justify-content-center">
         <div class="container row d-flex align-items-center">
           <div class="col">
-            <div class="logo">
+            <div class="logo d-sm-none d-md-none d-lg-block d-xl-block">
               <img src="Imagens/Blue Talks.svg" alt="Logo do bluetalks" />
             </div>
-            <div class="img-conexao">
+            <div class="img-conexao d-sm-none d-md-none d-lg-none d-xl-block">
               <img
                 src="Imagens/Conexão 1.svg"
                 alt="imagem conexão da tela de login"
@@ -31,7 +31,7 @@
             <div class="col-8 flex-column login-text">
               <h1 class="text-center">Login</h1>
               <form class="col flex-column">
-                <div class="form-group">
+                <div class="form-group my-4">
                   <label class="form-label" for="exampleInputEmail1">Email</label>
                   <input
                     type="email"
@@ -41,7 +41,7 @@
                     placeholder="Email"
                   />
                 </div>
-                <div class="form-group">
+                <div class="form-group my-4">
                   <label class="form-label" for="exampleInputPassword1">Senha</label>
                   <input
                     type="password"
