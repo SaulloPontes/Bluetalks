@@ -1,12 +1,14 @@
 * {
     box-sizing: border-box;
 }
+
+html {
+    height: 100vh;
+}
+
 main {
     width: 100%;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    height: 100%;
 }
 
 a {
@@ -14,13 +16,18 @@ a {
  text-decoration: none;
  color: #0671E0;   
 }
-
+/* 
 .container {
     display: flex;
     align-items: center;
     justify-content: center;
     width: 1339px;
     height: 668px;
+    border: 1px solid black;
+    border-radius: 45px;
+} */
+
+.main-container{
     border: 1px solid black;
     border-radius: 45px;
 }
@@ -30,11 +37,6 @@ a {
     align-items: center;
     width: 1189px;
     height: 634px;
-}
-
-.content-tamanho {
-    width: 593px;
-    height: 560px;
 }
 
 .logo {
@@ -50,8 +52,8 @@ a {
 
 .line {
     background-color: black;
-    width: 1px;
     height: 668px;
+    max-width: 0.1px;
 }
 
 .login-text h1 {
