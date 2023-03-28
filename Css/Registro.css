@@ -16,6 +16,16 @@ a {
  text-decoration: none;
  color: #0671E0;   
 }
+/* 
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1339px;
+    height: 668px;
+    border: 1px solid black;
+    border-radius: 45px;
+} */
 
 .main-container{
     border: 1px solid black;
