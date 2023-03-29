@@ -39,7 +39,7 @@ a {
 }
 
 .login-text h1 {
-    font-size: 58px;
+    font-size: 50px;
 }
 
 .pl-1 {
@@ -59,4 +59,9 @@ a {
 .div-relative{
     position: relative;
     overflow: hidden;
+}
+
+.my-btn {
+    color: #0671E0;
+    
 }
