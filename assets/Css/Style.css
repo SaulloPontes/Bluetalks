@@ -1,0 +1,101 @@
+* {
+    padding: 0;
+    margin: 0;
+    vertical-align: baseline;
+    list-style: none;
+    border: 0
+}
+
+a {
+    text-decoration: none;
+}
+
+body {
+    height: 100vh;
+}
+
+.header {
+    width: 100%;
+    position: fixed;
+}
+
+.main-content {
+    padding: 106px 0 0 0;
+    width: 100vw;
+    height: 100vh;
+}
+
+.my-left-bar {
+    max-width: 330px
+}
+
+.home-content {
+    margin: 36px 0;
+    padding: 0 26px;
+}
+
+.img-w {
+    max-width: 20px;
+}
+
+.img-perfil-w {
+    max-width: 75px;
+}
+
+
+/*CONGIGURAÇÕES DAS CORES DAS LETRAS DO MENU DA ESQUERDA*/
+
+.nav-config {
+    color: black;
+    font-size: 21px;
+}
+
+.nav-config:hover {
+    color: black;
+}
+
+.nav-config:focus {
+    color: black;
+}
+
+#font-bold {
+    font-weight: bold;
+}
+
+
+/*CONFIGURAÇÕES DO BOTÃO DE REMOVER*/
+
+.my-btn-remover {
+    background-color: #C33025;
+    color: white;
+}
+
+.my-btn-remover:hover {
+    background-color: #b60c00;
+    color: #c9c9c9;
+}
+
+.btn:first-child:active {
+    background: #b60c00;
+    color: #c9c9c9;
+}
+
+.my-btn-remover:active {
+    background: #b60c00;
+    color: #c9c9c9;
+}
+
+.my-btn-remover:focus-visible {
+    background-color: #b60c00;
+    color: #c9c9c9;
+}
+
+.border-primary {
+    border-color: #0053AD !important;
+}
+
+/*CONGIFURAÇÃO DAS FIGURINHAS*/
+
+.img-figurinha-w {
+    max-width: 100px;
+}
