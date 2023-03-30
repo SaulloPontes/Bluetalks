@@ -6,6 +6,10 @@
     border: 0
 }
 
+a {
+    text-decoration: none;
+}
+
 body {
     height: 100vh;
 }
@@ -28,4 +32,21 @@ body {
 .home-content {
     margin: 36px 0;
     padding: 0 26px;
+}
+
+.nav-config {
+    color: black;
+    font-size: 21px;
+}
+
+.nav-config:hover {
+    color: black;
+}
+
+.nav-config:focus {
+    color: black;
+}
+
+#font-bold {
+    font-weight: bold;
 }
