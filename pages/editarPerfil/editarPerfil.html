@@ -135,59 +135,34 @@
       <!--AAAAAAAAAAAAAA-->
 
       <div class="home-content col-12 col-md-8">
-        <div class="container d-flex justify-content-center">
-          <div class="content w-25 p-3 d-flex flex-column gap-5">
-            <div class="row">
-              <div class="row-1 text-center">
-                <img class="rounded-circle border border-dark" style="max-width: 80px;" src="https://source.unsplash.com/random/360x360?=1" />
-              </div>
-              <div class="row-1 h5 text-center mt-2">Blu</div>
-              <div class="row-1 fs-6 text-center">blu@talks.com</div>
-            </div>
-            <div class="col d-flex flex-column gap-3">
-              <div class="row">
-                <a class="d-flex align-items-center justify-content-between text-dark" href="/pages/editarPerfil/editarPerfil.html">
-                  <div class="col-2">
-                    <img class="img-w" src="/assets/Imagens/Filter.svg" alt="Icone do editar informações do perfil">
-                  </div>
-                  <div class="col fs-6">Editar informações do perfil</div>
-                </a>
-              </div>
-              <div class="row">
-                <a class="d-flex align-items-center justify-content-between text-dark" href="#">
-                  <div class="col-2">
-                    <img class="img-w" src="/assets/Imagens/Idioma.svg" alt="Icone do editar informações do perfil">
-                  </div>
-                  <div class="col fs-6">Idioma</div>
-                </a>
-              </div>
-              <div class="row">
-                <a class="d-flex align-items-center justify-content-between text-dark" href="#">
-                  <div class="col-2">
-                    <img class="img-w" src="/assets/Imagens/Acessibilidade.svg" alt="Icone do editar informações do perfil">
-                  </div>
-                  <div class="col fs-6">Acessibilidade</div>
-                </a>
-              </div>
-              <div class="row">
-                <a class="d-flex align-items-center justify-content-between text-dark" href="#">
-                  <div class="col-2">
-                    <img class="img-w" src="/assets/Imagens/Add user.svg" alt="Icone do editar informações do perfil">
-                  </div>
-                  <div class="col fs-6">Adicionar perfil</div>
-                </a>
-              </div>
-              <div class="row d-flex align-items-center justify-content-between">
-                <div class="col-2">
-                  <img class="img-w" src="/assets/Imagens/Bell.svg" alt="Icone do editar informações do perfil">
+            <div class="container d-flex justify-content-center">
+                <div class="content w-25 p-3 d-flex flex-column gap-5">
+                    <form class="col d-flex justify-content-center align-items-center flex-column gap-4">
+                        <div class="form-group">
+                          <label class="form-label" for="exampleInputText1">Nome completo</label>
+                          <input type="text" class="form-control" id="exampleInputText1" aria-describedby="nameHelp"
+                            placeholder="Nome completo" />
+                        </div>
+                        <div class="form-group">
+                          <label class="form-label" for="exampleInputText2">Apelido</label>
+                          <input type="text" class="form-control" id="exampleInputText2" placeholder="Apelido" />
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="exampleInputEmail1">Email</label>
+                            <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email" />
+                            <label class="my-2 d-flex justify-content-end label-text small">
+                                <a href="#">Enviar solicitação de troca</a></label>
+                          </div>
+                        <div class="m-2">
+                          <div class="d-flex justify-content-center">
+                                <button type="button" class="btn btn-primary">
+                                Confirmar
+                                </button>
+                          </div>
+                        </div>
+                      </form>
                 </div>
-                <div class="col fs-6">Notificações</div>
-                <div class="col-1 form-check form-switch">
-                  <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
-                </div>
-              </div>
             </div>
-          </div>
         </div>
       </div>
     </div>
