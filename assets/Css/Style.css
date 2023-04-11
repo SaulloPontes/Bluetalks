@@ -14,26 +14,6 @@ body {
     height: 100vh;
 }
 
-.header {
-    width: 100%;
-    position: fixed;
-}
-
-.main-content {
-    padding: 106px 0 0 0;
-    width: 100vw;
-    height: 100vh;
-}
-
-.my-left-bar {
-    max-width: 330px
-}
-
-.home-content {
-    margin: 50px auto;
-    padding: 0 26px;
-}
-
 .img-w {
     max-width: 20px;
 }
@@ -95,7 +75,3 @@ body {
 }
 
 /*CONGIFURAÇÃO DAS FIGURINHAS*/
-
-.img-figurinha-w {
-    width: 100%;
-}
