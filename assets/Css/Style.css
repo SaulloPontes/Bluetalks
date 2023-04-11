@@ -3,15 +3,12 @@
     margin: 0;
     vertical-align: baseline;
     list-style: none;
-    border: 0
+    border: 0;
+    box-sizing: border-box;
 }
 
 a {
     text-decoration: none;
-}
-
-body {
-    height: 100vh;
 }
 
 .img-w {

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-br" class="vh-100">
 
 <head>
   <meta charset="UTF-8" />
@@ -14,13 +14,13 @@
   <script src="../../components/header.js" type="text/javascript" defer></script>
 </head>
 
-<body>
+<body class="h-100">
   <header-component></header-component>
-  <main>
+  <main class="h-100">
 
   <div class="container-fluid h-100">
   <div class="row h-100">
-    <div class="col-3" style="border-right: 1px solid #0d6efd">
+    <div class="col-2">
       <ul class="nav flex-column p-5 gap-3">
         <li class="row">
           <a class="nav-config nav-link d-flex align-items-center gap-4" id="font-bold" href="./index.html">
@@ -58,7 +58,7 @@
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
-                <div class="modal-body  border">
+                <div class="modal-body border">
 
                   <div class="d-flex flex-row mb-3   ">
                     <div class="p-2 text-center ">
@@ -103,8 +103,8 @@
         </li>
       </ul>
     </div>
-
-    <div class="mt-5 col-8">
+    <div class="vr bg-primary px-0"></div>
+    <div class="mt-5 col-8">      
       <div class="container">
         <div class="row">
           <div class="col">
@@ -229,21 +229,14 @@
   </div>
   </div>
   </main>
-
-
-  <footer>
-
-    <div class="fixed-bottom bg-primary text-light pt-5"></div>
-
-  </footer>
-
-
   </div>
   </div>
-
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
     crossorigin="anonymous"></script>
 </body>
+
+<div class="fixed-bottom bg-primary text-light pt-5">
+</div>
 
 </html>
