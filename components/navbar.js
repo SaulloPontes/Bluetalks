@@ -1,25 +1,25 @@
 const navbarElement = () => `
 <div class="nav d-flex ms-5 mt-5 gap-3">
   <div class="row">
-    <a class="nav-config nav-link d-flex align-items-center gap-4" id="font-bold" href="./index.html">
+    <a id="inicio-opt" class="nav-config nav-link d-flex align-items-center gap-4" href="/pages/index/index.html">
       <img class="img-w" src="/assets/Imagens/User2.svg" alt="Icone do início">
       Início
     </a>
   </div>
   <div class="row">
-    <a class="nav-config nav-link d-flex align-items-center gap-4" href="/pages/categorias/categorias.html">
+    <a id="categorias-opt" class="nav-config nav-link d-flex align-items-center gap-4" href="/pages/categorias/categorias.html">
       <img class="img-w" src="/assets/Imagens/Category.svg" alt="">
       Categorias
     </a>
   </div>
   <div class="row">
-    <a class="nav-config nav-link d-flex align-items-center gap-4" href="/pages/perfis/perfis.html">
+    <a id="perfis-opt" class="nav-config nav-link d-flex align-items-center gap-4" href="/pages/perfis/perfis.html">
       <img class="img-w" src="/assets/Imagens/Users.svg" alt="">
       Perfis
     </a>
   </div>
   <div class="row">
-    <a class="nav-config nav-link d-flex align-items-center gap-4" href="#" data-bs-toggle="modal"
+    <a id="notificacoes-opt" class="nav-config nav-link d-flex align-items-center gap-4" href="#" data-bs-toggle="modal"
       data-bs-target="#exampleModal">
       <img class="img-w" src="/assets/Imagens/Bell.svg" alt="">
       Notificações
@@ -64,7 +64,7 @@ const navbarElement = () => `
     </div>
   </div>
   <div class="row">
-    <a class="nav-config nav-link d-flex align-items-center gap-4"
+    <a id="configuracoes-opt" class="nav-config nav-link d-flex align-items-center gap-4"
       href="/pages/configuracoes/configuracoes.html">
       <img class="img-w" src="/assets/Imagens/Settings.svg" alt="">
       Configurações
@@ -83,6 +83,7 @@ class Navbar extends HTMLElement{
         this.setData();
         this.setElementStyle();
         this.innerHTML = navbarElement();
+        document.getElementById(`${this.data.current}-opt`).classList.add("fw-bold");
     }
 
     setElementStyle(){
@@ -92,7 +93,8 @@ class Navbar extends HTMLElement{
     }
 
     setData(){
-        
+        if(this.hasAttribute("current"))
+            this.data.current = this.getAttribute("current");
     }
 }
 

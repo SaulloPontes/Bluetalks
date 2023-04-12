@@ -11,6 +11,9 @@ a {
     text-decoration: none;
 }
 
+html{
+    height: 100vh;
+}
 .img-w {
     max-width: 20px;
 }
