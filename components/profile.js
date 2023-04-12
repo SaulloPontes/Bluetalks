@@ -16,11 +16,17 @@ class Profile extends HTMLElement{
     }
 
     connectedCallback(){
-        this.setProfileData();
+        this.setData();
+        this.setStyle();
         this.innerHTML = profileComponent(this.data.id, this.data.name, this.data.image);
     }
 
-    setProfileData(){
+    setStyle(){
+        this.classList.add("col");
+        this.classList.add("text-center");
+    }
+    
+    setData(){
         if(this.hasAttribute('id'))
             this.data.id = this.getAttribute('id');
         if(this.hasAttribute('image'))

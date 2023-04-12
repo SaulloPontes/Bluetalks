@@ -8,3 +8,4 @@ addComponentScript('header');
 addComponentScript('footer');
 addComponentScript('profile');
 addComponentScript('category');
+addComponentScript('navbar');

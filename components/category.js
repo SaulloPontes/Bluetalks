@@ -17,11 +17,17 @@ class Category extends HTMLElement{
     }
 
     connectedCallback(){
-        this.setCategoryData();
+        this.setData();
+        this.setStyle();
         this.innerHTML = categoryComponent(this.data.id, this.data.name, this.data.image);
     }
 
-    setCategoryData(){
+    setStyle(){
+        this.classList.add("col");
+        this.classList.add("text-center");
+    }
+
+    setData(){
         if(this.hasAttribute('id'))
             this.data.id = this.getAttribute('id');
         if(this.hasAttribute('image'))
