@@ -19,6 +19,7 @@ headerComponent = `<nav class="navbar navbar-expand-sm bg-body-tertiary p-0 head
           </div>
         </div>
       </nav>`
+      
 class Header extends HTMLElement{
     constructor(){
         super();
