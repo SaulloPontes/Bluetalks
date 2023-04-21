@@ -11,9 +11,10 @@ a {
     text-decoration: none;
 }
 
-html{
+html {
     height: 100vh;
 }
+
 .img-w {
     max-width: 20px;
 }
@@ -27,7 +28,7 @@ html{
 
 .nav-config {
     color: black;
-    font-size: 21px;
+    font-size: 18px;
 }
 
 .nav-config:hover {
@@ -73,20 +74,22 @@ html{
 .border-primary {
     border-color: #0053AD !important;
 }
+
+
 /*CONGIFURAÇÃO DAS FIGURINHAS*/
+
 
 /*CONFIGURAÇÃO SCROLLBAR*/
 
 ::-webkit-scrollbar {
-    width: 10px; 
-  }
-  
+    width: 10px;
+}
+
 ::-webkit-scrollbar-thumb {
-    background-color: #0053AD; 
-    border-radius: 10px; 
-  }
-  
+    background-color: #0053AD;
+    border-radius: 10px;
+}
 
 ::-webkit-scrollbar-track {
-    background-color: transparent; 
-  }
+    background-color: transparent;
+}

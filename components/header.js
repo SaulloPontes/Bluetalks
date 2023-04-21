@@ -1,31 +1,35 @@
-headerComponent = `<nav class="navbar navbar-expand-sm bg-body-tertiary p-0 header">
+headerComponent = `<header class="navbar navbar-expand-sm bg-body-tertiary p-0 header">
         <div class="container-fluid bg-primary px-5">
-          <h1 class="navbar-brand fs-1 text-light" href="#">Bluetalks</h1>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <a class="navbar-brand col-md-3 col-lg-2 me-0 fs-2 text-light" href="#">Bluetalks</a>
+          <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
-          <div class="dropdown">
-            <a href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-              <div class="d-flex align-items-center">
-                <span class="me-3 text-light fs-4">Bestial</span>
-                <img src="../../assets/Imagens/blu.JPG" width="60rem" class="rounded-circle border border-dark" alt="..." />
+          <div class="navbar-nav">
+            <div class="nav-item text-nowrap">
+          
+              <div class="dropdown">
+                <a href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                  <div class="d-flex align-items-center">
+                    <span class="me-3 text-light fs-4">Bestial</span>
+                    <img src="../../assets/Imagens/blu.JPG" width="60rem" class="rounded-circle border border-dark" alt="..." />
+                  </div>
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                  <li><a class="dropdown-item" href="#">Perfil</a></li>
+                  <li><a class="dropdown-item" href="#">Sair</a></li>
+                </ul>
               </div>
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-              <li><a class="dropdown-item" href="#">Perfil</a></li>
-              <li><a class="dropdown-item" href="#">Sair</a></li>
-            </ul>
+            </div>
           </div>
         </div>
       </nav>`
-      
-class Header extends HTMLElement{
-    constructor(){
+
+class Header extends HTMLElement {
+    constructor() {
         super();
     }
 
-    connectedCallback(){
+    connectedCallback() {
         this.innerHTML = headerComponent;
     }
 }

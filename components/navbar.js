@@ -1,25 +1,26 @@
 const navbarElement = () => `
-<div class="nav d-flex ms-5 mt-5 gap-3">
-  <div class="row">
-    <a id="inicio-opt" class="nav-config nav-link d-flex align-items-center gap-4" href="/pages/index/index.html">
+<div class="position-sticky pt-4 ps-0 ms-0 sidebar-sticky">
+<ul class="nav flex-column">
+  <li class="nav-item">
+    <a id="inicio-opt" class="nav-config nav-link d-flex align-items-center gap-2" href="/pages/index/index.html">
       <img class="img-w" src="/assets/Imagens/User2.svg" alt="Icone do início">
       Início
     </a>
-  </div>
-  <div class="row">
-    <a id="categorias-opt" class="nav-config nav-link d-flex align-items-center gap-4" href="/pages/categorias/categorias.html">
+  </li>
+  <li class="nav-item">
+    <a id="categorias-opt" class="nav-config nav-link d-flex align-items-center gap-2" href="/pages/categorias/categorias.html">
       <img class="img-w" src="/assets/Imagens/Category.svg" alt="">
       Categorias
     </a>
-  </div>
-  <div class="row">
-    <a id="perfis-opt" class="nav-config nav-link d-flex align-items-center gap-4" href="/pages/perfis/perfis.html">
+  </li>
+  <li class="nav-item">
+    <a id="perfis-opt" class="nav-config nav-link d-flex align-items-center gap-2" href="/pages/perfis/perfis.html">
       <img class="img-w" src="/assets/Imagens/Users.svg" alt="">
       Perfis
     </a>
-  </div>
-  <div class="row">
-    <a id="notificacoes-opt" class="nav-config nav-link d-flex align-items-center gap-4" href="#" data-bs-toggle="modal"
+  </li>
+  <li class="nav-item">
+    <a id="notificacoes-opt" class="nav-config nav-link d-flex align-items-center gap-2" href="#" data-bs-toggle="modal"
       data-bs-target="#exampleModal">
       <img class="img-w" src="/assets/Imagens/Bell.svg" alt="">
       Notificações
@@ -62,38 +63,43 @@ const navbarElement = () => `
         </div>
       </div>
     </div>
-  </div>
-  <div class="row">
-    <a id="configuracoes-opt" class="nav-config nav-link d-flex align-items-center gap-4"
-      href="/pages/configuracoes/configuracoes.html">
+    <li class="nav-item">
+    <a id="configuracoes-opt" class="nav-config nav-link d-flex align-items-center gap-2" href="/pages/configuracoes/configuracoes.html">
       <img class="img-w" src="/assets/Imagens/Settings.svg" alt="">
       Configurações
     </a>
+  </li>
+  </ul>
   </div>
 </div>`;
 
-class Navbar extends HTMLElement{
+class Navbar extends HTMLElement {
     data = {};
-    
-    constructor(){
+
+    constructor() {
         super();
     }
 
-    connectedCallback(){
+    connectedCallback() {
         this.setData();
         this.setElementStyle();
         this.innerHTML = navbarElement();
         document.getElementById(`${this.data.current}-opt`).classList.add("fw-bold");
     }
 
-    setElementStyle(){
-        this.classList.add("col");
-        this.classList.add("col-xxl-2");
-        this.style.borderRight = '1px solid var(--bs-blue)';
+    setElementStyle() {
+        this.id = "sidebarMenu"
+        this.classList.add("col-md-3")
+        this.classList.add("col-lg-2")
+        this.classList.add("col-xl-2")
+        this.classList.add("d-md-block")
+        this.classList.add("bg-body-tertiary")
+        this.classList.add("sidebar")
+        this.classList.add("collapse")
     }
 
-    setData(){
-        if(this.hasAttribute("current"))
+    setData() {
+        if (this.hasAttribute("current"))
             this.data.current = this.getAttribute("current");
     }
 }
