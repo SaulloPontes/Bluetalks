@@ -93,9 +93,10 @@ class Navbar extends HTMLElement {
         this.classList.add("col-lg-2")
         this.classList.add("col-xl-2")
         this.classList.add("d-md-block")
-        this.classList.add("bg-body-tertiary")
+        this.classList.add("bg-white")
         this.classList.add("sidebar")
         this.classList.add("collapse")
+        this.classList.add("shadow")
     }
 
     setData() {
