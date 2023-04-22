@@ -3,7 +3,7 @@ const navbarElement = () => `
 <ul class="nav flex-column">
   <li class="nav-item">
     <a id="inicio-opt" class="nav-config nav-link d-flex align-items-center gap-2" href="/pages/index/index.html">
-      <img class="img-w" src="/assets/Imagens/User2.svg" alt="Icone do início">
+      <img class="img-w" src="/assets/Imagens/User.svg" alt="Icone do início">
       Início
     </a>
   </li>
