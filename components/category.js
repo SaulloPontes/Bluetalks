@@ -1,12 +1,10 @@
 const categoryComponent = (id, name, imageUrl) => `
 <a href="/category/${id}">
-                  <img src="${imageUrl}" class="border border-dark rounded"
-                    width="100rem" alt="">
+                  <img src="${imageUrl}" class="border border-dark mt-2 rounded"
+                    width="100%" alt="">
                 </a>
-                <div class="row mt-3">
-                  <div class="col">
-                    <h5>${name}</h5>
-                  </div>
+                <div class="h5 text-center my-3">
+                    ${name}
                 </div>`;
 
 class Category extends HTMLElement{

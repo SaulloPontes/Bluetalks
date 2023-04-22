@@ -1,6 +1,6 @@
 profileComponent = (id, name, imageUrl) => `
 <a href="/profile/${id}">
-    <img src="${imageUrl}" class="rounded-circle border border-dark" alt="${name}'s profile picture" />
+    <img src="${imageUrl}" class="rounded-circle border border-dark mt-2" alt="${name}'s profile picture" />
 </a>
 <div class="row mt-3">
     <div class="col">
