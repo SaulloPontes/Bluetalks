@@ -1,7 +1,7 @@
 headerComponent = `<header class="navbar navbar-expand-sm bg-body-tertiary p-0 header">
         <div class="container-fluid bg-primary px-5">
           <a class="navbar-brand col-md-3 col-lg-2 me-0 fs-2 text-light" href="#">Bluetalks</a>
-          <div class="d-flex align-items-center gap-3">
+
             <button class="navbar-toggler d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>
@@ -22,7 +22,7 @@ headerComponent = `<header class="navbar navbar-expand-sm bg-body-tertiary p-0 h
                 </div>
               </div>
             </div>
-          </div>
+        
         </div>
       </nav>`
 
