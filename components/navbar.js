@@ -20,8 +20,7 @@ const navbarElement = () => `
     </a>
   </li>
   <li class="nav-item">
-    <a id="notificacoes-opt" class="nav-config nav-link d-flex align-items-center gap-2" href="#" data-bs-toggle="modal"
-      data-bs-target="#exampleModal">
+    <a id="notificacoes-opt" class="nav-config nav-link d-flex align-items-center gap-2" href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">
       <img class="img-w" src="/assets/Imagens/Bell.svg" alt="">
       Notificações
     </a>
@@ -41,7 +40,7 @@ const navbarElement = () => `
                 <span class=" text-center">lorem</span>
                 <img src="/assets/Imagens/blu.JPG" class="rounded-circle border border-dark" alt="..." />
               </div>
-              <div class="p-2  m-4"> Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quia, omnis
+              <div class="p-2 m-4"> Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quia, omnis
                 cupiditate!
                 Voluptatem blanditiis quae dolore optio, iusto modi aliquid. Magnam hic eaque eum cum nulla
                 provident, quod itaque nisi consectetur.</div>
@@ -51,7 +50,7 @@ const navbarElement = () => `
                 <span class=" text-center">lorem</span>
                 <img src="/assets/Imagens/blu.JPG" class="rounded-circle border border-dark" alt="..." />
               </div>
-              <div class="p-2 m-4 "> Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quia, omnis
+              <div class="p-2 m-4"> Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quia, omnis
                 cupiditate!
                 Voluptatem blanditiis quae dolore optio, iusto modi aliquid. Magnam hic eaque eum cum nulla
                 provident, quod itaque nisi consectetur.</div>

@@ -93,3 +93,9 @@ html {
 ::-webkit-scrollbar-track {
     background-color: transparent;
 }
+
+/*navbar*/
+
+.modal-backdrop {
+    display: none;
+}
