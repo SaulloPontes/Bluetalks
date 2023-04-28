@@ -9,3 +9,4 @@ addComponentScript('footer');
 addComponentScript('profile');
 addComponentScript('category');
 addComponentScript('navbar');
+addComponentScript('figure');

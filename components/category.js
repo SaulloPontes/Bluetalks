@@ -3,7 +3,7 @@ const categoryComponent = (id, name, imageUrl) => `
                   <img src="${imageUrl}" class="border border-dark mt-2 rounded"
                     width="100%" alt="">
                 </a>
-                <div class="h5 text-center my-3">
+                <div class="h5 font-open-sans text-center my-3">
                     ${name}
                 </div>`;
 

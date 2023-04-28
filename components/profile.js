@@ -3,8 +3,8 @@ profileComponent = (id, name, imageUrl) => `
     <img src="${imageUrl}" class="rounded-circle border border-dark mt-2" alt="${name}'s profile picture" />
 </a>
 <div class="row mt-3">
-    <div class="col">
-        <h5>${name}</h5>
+    <div class="h5 col font-open-sans">
+        ${name}
     </div>
 </div>`;
 
