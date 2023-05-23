@@ -1,5 +1,3 @@
-
-
 const{MongoClient,ObjectId} = require("mongodb");
 
 async function connect() {
@@ -28,7 +26,7 @@ router.get('/',(req,res)=>res.json({message:'Funcionando'}));
 
 
 
-router.get('/perfil/:id?',async function(req,res,next){
+router.get('/pages/perfil/:id?',async function(req,res,next){
    try {
       const db = await connect();
      if (req.params.id) {
@@ -46,7 +44,7 @@ router.get('/perfil/:id?',async function(req,res,next){
 
 
 
-router.post('/perfil',async function(req,res,next){
+router.post('/pages/perfil/',async function(req,res,next){
    try {
       const aluno   =   req.body;
       const db = await connect();
@@ -57,7 +55,7 @@ router.post('/perfil',async function(req,res,next){
     }
 })
 
-router.put('/perfil/:id', async function(req,res,next){
+router.put('/pages/perfil/:id', async function(req,res,next){
   try{
     const aluno = req.body;
     const db = await connect();
@@ -70,7 +68,7 @@ router.put('/perfil/:id', async function(req,res,next){
 
 
 
-router.delete('/perfil/:id', async function(req,res,next){
+router.delete('/pages/perfil/:id', async function(req,res,next){
   try{
     const db = await connect();
      res.json(await db.collection("perfil").deleteOne({_id: new ObjectId(req.params.id)}))
@@ -84,4 +82,3 @@ router.delete('/perfil/:id', async function(req,res,next){
 app.use('/',router);
 app.listen(3000)
 console.log("Servidor funcionando ")
-
