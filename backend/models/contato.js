@@ -2,9 +2,9 @@ const mongoose = require('mongoose');
 
 
 const ContatoUsuarioSchema = new mongoose.Schema({
-    usuario : {author: { type: mongoose.Schema.Types.ObjectId, ref: 'Usuario' }},
+    usuario :{type: mongoose.Schema.Types.ObjectId, ref: 'Usuario',required: true},
     numero : {type: String, required: true},
-    nome : { type: String, required: true },
+    nome :  {type: String, required: true },
     relacao : { type: String, required: true },
 
   },{timestamps: true});
