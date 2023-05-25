@@ -3,10 +3,10 @@ const mongoose = require('mongoose');
 
 const Usuario = require('./models/usuario');
 const UsuarioResponsavel = require('./models/usuarioResponsavel')
-const contato = require('./models/contato')
+const ContatoUsuario = require('./models/contato')
 
 
-const mongoURI = 'mongodb+srv://saulopontes:sauloPontesBlue@clusterbluetalks.kd8yiz7.mongodb.net/';
+const mongoURI = 'mongodb+srv://saulopontes:sauloPontesBlue@clusterbluetalks.kd8yiz7.mongodb.net/blueTalksDB';
 
 const options = {
     useNewUrlParser: true,
@@ -22,6 +22,7 @@ const options = {
   });
 
 
+  
     const app = express();
     const router = express.Router();
     app.use(require('cors')());
