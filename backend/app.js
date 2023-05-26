@@ -37,7 +37,21 @@ const options = {
     router.get('/',(req,res)=>res.json({message:'Funcionando'}));
 
     //API Usuario
-
+    
+    router.get('/usuarios/:id', (req, res) => {
+    const id = req.params.id;
+    Usuario.findById(id)
+      .then((usuario) => {
+        if (!usuario) {
+          res.status(404).send('Usuário não encontrado');
+        } else {
+          res.send(usuario);
+        }
+      })
+      .catch((error) => {
+        res.status(500).send('Erro ao obter usuário: ' + error);
+      });
+  });
     
     router.post('/usuarios', (req, res) => {
     const usuario = new Usuario(req.body);
