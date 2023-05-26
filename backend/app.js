@@ -310,7 +310,7 @@ const options = {
 
     //API Categoria
 
-    router.get('/categorias', async (req, res) => {
+    router.get('/categoria', async (req, res) => {
       try {
         const categorias = await Categoria.find();
         res.json(categorias);
@@ -319,17 +319,7 @@ const options = {
       }
     });
     
-    router.post('/categorias', async (req, res) => {
-      try {
-        const novaCategoria = new Categoria(req.body);
-        await novaCategoria.save();
-        res.status(201).json(novaCategoria);
-      } catch (error) {
-        res.status(500).json({ error: 'Erro ao criar a categoria' });
-      }
-    });
-    
-    router.get('/categorias/:id', async (req, res) => {
+    router.get('/categoria/:id', async (req, res) => {
       try {
         const categoria = await Categoria.findById(req.params.id);
         if (categoria) {
@@ -342,7 +332,17 @@ const options = {
       }
     });
     
-    router.put('/categorias/:id', async (req, res) => {
+    router.post('/categoria', async (req, res) => {
+      try {
+        const novaCategoria = new Categoria(req.body);
+        await novaCategoria.save();
+        res.status(201).json(novaCategoria);
+      } catch (error) {
+        res.status(500).json({ error: 'Erro ao criar a categoria' });
+      }
+    });
+    
+    router.put('/categoria/:id', async (req, res) => {
       try {
         const categoria = await Categoria.findByIdAndUpdate(req.params.id, req.body, { new: true });
         if (categoria) {
@@ -355,7 +355,7 @@ const options = {
       }
     });
     
-    router.delete('/categorias/:id', async (req, res) => {
+    router.delete('/categoria/:id', async (req, res) => {
       try {
         const categoria = await Categoria.findByIdAndDelete(req.params.id);
         if (categoria) {
