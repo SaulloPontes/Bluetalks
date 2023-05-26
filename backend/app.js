@@ -4,6 +4,9 @@ const mongoose = require('mongoose');
 const Usuario = require('./models/usuario');
 const UsuarioResponsavel = require('./models/usuarioResponsavel')
 const ContatoUsuario = require('./models/contato')
+const Categoria = require('./models/categoria')
+const CategoriaFigura = require('./models/categoriaFigura')
+const Figura  = require('./models/figura')
 
 
 const mongoURI = 'mongodb+srv://saulopontes:sauloPontesBlue@clusterbluetalks.kd8yiz7.mongodb.net/blueTalksDB';
@@ -224,6 +227,195 @@ const options = {
 
     //Fim API Contato
 
+    // API Figura
+
+    router.get('/figuras', async (req, res) => {
+      try {
+        const figuras = await Figura.find();
+        res.json(figuras);
+      } catch (error) {
+        res.status(500).json({ error: 'Erro ao obter as figuras' });
+      }
+    });
+    
+    
+    router.post('/figuras', async (req, res) => {
+      try {
+        const novaFigura = new Figura(req.body);
+        await novaFigura.save();
+        res.status(201).json(novaFigura);
+      } catch (error) {
+        res.status(500).json({ error: 'Erro ao criar a figura' });
+      }
+    });
+    
+ 
+    router.get('/figuras/:id', async (req, res) => {
+      try {
+        const figura = await Figura.findById(req.params.id);
+        if (figura) {
+          res.json(figura);
+        } else {
+          res.status(404).json({ error: 'Figura não encontrada' });
+        }
+      } catch (error) {
+        res.status(500).json({ error: 'Erro ao obter a figura' });
+      }
+    });
+    
+   
+    router.put('/figuras/:id', async (req, res) => {
+      try {
+        const figura = await Figura.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        if (figura) {
+          res.json(figura);
+        } else {
+          res.status(404).json({ error: 'Figura não encontrada' });
+        }
+      } catch (error) {
+        res.status(500).json({ error: 'Erro ao atualizar a figura' });
+      }
+    });
+    
+   
+    router.delete('/figuras/:id', async (req, res) => {
+      try {
+        const figura = await Figura.findByIdAndDelete(req.params.id);
+        if (figura) {
+          res.json({ message: 'Figura excluída com sucesso' });
+        } else {
+          res.status(404).json({ error: 'Figura não encontrada' });
+        }
+      } catch (error) {
+        res.status(500).json({ error: 'Erro ao excluir a figura' });
+      }
+    });
+
+    //Fim API Contato
+
+    //API Categoria
+
+    router.get('/categorias', async (req, res) => {
+      try {
+        const categorias = await Categoria.find();
+        res.json(categorias);
+      } catch (error) {
+        res.status(500).json({ error: 'Erro ao obter as categorias' });
+      }
+    });
+    
+    router.post('/categorias', async (req, res) => {
+      try {
+        const novaCategoria = new Categoria(req.body);
+        await novaCategoria.save();
+        res.status(201).json(novaCategoria);
+      } catch (error) {
+        res.status(500).json({ error: 'Erro ao criar a categoria' });
+      }
+    });
+    
+    router.get('/categorias/:id', async (req, res) => {
+      try {
+        const categoria = await Categoria.findById(req.params.id);
+        if (categoria) {
+          res.json(categoria);
+        } else {
+          res.status(404).json({ error: 'Categoria não encontrada' });
+        }
+      } catch (error) {
+        res.status(500).json({ error: 'Erro ao obter a categoria' });
+      }
+    });
+    
+    router.put('/categorias/:id', async (req, res) => {
+      try {
+        const categoria = await Categoria.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        if (categoria) {
+          res.json(categoria);
+        } else {
+          res.status(404).json({ error: 'Categoria não encontrada' });
+        }
+      } catch (error) {
+        res.status(500).json({ error: 'Erro ao atualizar a categoria' });
+      }
+    });
+    
+    router.delete('/categorias/:id', async (req, res) => {
+      try {
+        const categoria = await Categoria.findByIdAndDelete(req.params.id);
+        if (categoria) {
+          res.json({ message: 'Categoria excluída com sucesso' });
+        } else {
+          res.status(404).json({ error: 'Categoria não encontrada' });
+        }
+      } catch (error) {
+        res.status(500).json({ error: 'Erro ao excluir a categoria' });
+      }
+    });
+
+    //Fim Categoria
+
+    //API CategoriaFigura
+
+    router.get('/categoria-figuras', async (req, res) => {
+      try {
+        const categoriaFiguras = await CategoriaFigura.find();
+        res.json(categoriaFiguras);
+      } catch (error) {
+        res.status(500).json({ error: 'Erro ao obter as categorias de figuras' });
+      }
+    });
+    
+    router.post('/categoria-figuras', async (req, res) => {
+      try {
+        const novaCategoriaFigura = new CategoriaFigura(req.body);
+        await novaCategoriaFigura.save();
+        res.status(201).json(novaCategoriaFigura);
+      } catch (error) {
+        res.status(500).json({ error: 'Erro ao criar a categoria de figura' });
+      }
+    });
+    
+    router.get('/categoria-figuras/:id', async (req, res) => {
+      try {
+        const categoriaFigura = await CategoriaFigura.findById(req.params.id);
+        if (categoriaFigura) {
+          res.json(categoriaFigura);
+        } else {
+          res.status(404).json({ error: 'Categoria de figura não encontrada' });
+        }
+      } catch (error) {
+        res.status(500).json({ error: 'Erro ao obter a categoria de figura' });
+      }
+    });
+    
+    router.put('/categoria-figuras/:id', async (req, res) => {
+      try {
+        const categoriaFigura = await CategoriaFigura.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        if (categoriaFigura) {
+          res.json(categoriaFigura);
+        } else {
+          res.status(404).json({ error: 'Categoria de figura não encontrada' });
+        }
+      } catch (error) {
+        res.status(500).json({ error: 'Erro ao atualizar a categoria de figura' });
+      }
+    });
+    
+    router.delete('/categoria-figuras/:id', async (req, res) => {
+      try {
+        const categoriaFigura = await CategoriaFigura.findByIdAndDelete(req.params.id);
+        if (categoriaFigura) {
+          res.json({ message: 'Categoria de figura excluída com sucesso' });
+        } else {
+          res.status(404).json({ error: 'Categoria de figura não encontrada' });
+        }
+      } catch (error) {
+        res.status(500).json({ error: 'Erro ao excluir a categoria de figura' });
+      }
+    });
+
+    //Fim CategoriaFigura
 
 
   app.use('/',router);
