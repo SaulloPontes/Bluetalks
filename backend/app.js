@@ -14,6 +14,7 @@ const mongoURI = 'mongodb+srv://saulopontes:sauloPontesBlue@clusterbluetalks.kd8
 const options = {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    serverSelectionTimeoutMS: 50000
   };
 
   mongoose.connect(mongoURI, options)
