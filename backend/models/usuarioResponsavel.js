@@ -2,8 +2,8 @@ const mongoose = require('mongoose');
 
 
 const UsuarioResponsavelSchema = new mongoose.Schema({
-    usuarioResponsavel :  { type: mongoose.Schema.Types.ObjectId, ref: 'Usuario'},
-    usuarioDependente :  { type: mongoose.Schema.Types.ObjectId, ref: 'Usuario'}
+    usuario_responsavel :  { type: mongoose.Schema.Types.ObjectId, ref: 'Usuario' },
+    usuario_dependente :  { type: mongoose.Schema.Types.ObjectId, ref: 'Usuario' }
   },{timestamps: true});
 
 
