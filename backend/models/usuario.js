@@ -1,4 +1,3 @@
-
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
@@ -6,12 +5,12 @@ const bcrypt = require('bcrypt');
   // Definir esquemas
 
 const UsuarioSchema = new mongoose.Schema({
-    nome: { type: String, required: true, unique: true},
+    nome: { type: String, required: true,},
     email: { type: String, required: true },
     senha :{ type: String, required: true , select : false},
-    observacao :{ type: String, required: false},
-    foto :{ type: Buffer, required: false},
-    apelido : { type: String, required: false },
+    observacao :{ type: String, required: true},
+    foto :{ type: String, required: true},
+    apelido : { type: String, required: true },
   },{timestamps: true});
 
 
