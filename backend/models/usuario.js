@@ -1,4 +1,3 @@
-
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
@@ -8,7 +7,7 @@ const bcrypt = require('bcrypt');
 const UsuarioSchema = new mongoose.Schema({
     nome: { type: String, required: true, unique: true},
     email: { type: String, required: true },
-    senha :{ type: String, required: true , select : false},
+    senha :{ type: String, required: true },
     observacao :{ type: String, required: false},
     foto :{ type: Buffer, required: false},
     apelido : { type: String, required: false },
