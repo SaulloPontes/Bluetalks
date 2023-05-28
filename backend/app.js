@@ -59,33 +59,35 @@ const options = {
       };
     });
 
-    router.post('/usuario', (req, res) => {
+    router.post('/usuario', async (req, res) => {
       if(tokenChallenge(req.token, res))
         return res.sendStatus(401);
 
-      const usuario = new Usuario(req.body);
-      usuario.save()
-        .then(() => {
+      try{
+        const usuario = new Usuario(req.body);
+        const usuarioSave = await usuario.save();
+        if(usuarioSave)
           res.status(201).send('Usuário criado com sucesso');
-        })
-        .catch((error) => {
-          res.status(400).send('Erro ao criar usuário: ' + error);
-        });
+        else
+          res.status(400).send('Erro ao criar usuário');
+      }
+      catch(error){
+        res.status(400).send('Erro ao criar usuário: ' + error);
+      }
     });
   
   
-  router.put('/usuario/:id', verifyToken, (req, res) => {
+  router.put('/usuario/:id', verifyToken, async (req, res) => {
     if(tokenChallenge(req.token, res))
         return res.sendStatus(401);
-
-    const id = req.params.id;
-    Usuario.findByIdAndUpdate(id, req.body)
-      .then(() => {
-        res.send('Usuário atualizado com sucesso');
-      })
-      .catch((error) => {
-        res.status(400).send('Erro ao atualizar usuário: ' + error);
-      });
+    try {
+      const id = req.params.id;
+      const usuario = Usuario.findByIdAndUpdate(id, req.body);
+        res.status(200).send('Usuário atualizado com sucesso' + usuario);
+    }
+    catch(error){
+      res.status(400).send('Erro ao atualizar usuário: ' + error);
+    }
   });
   
  
@@ -93,16 +95,13 @@ const options = {
     if(tokenChallenge(req.token, res))
         return res.sendStatus(401);
 
-    if(tokenChallenge(req.token, res))
-      return res.sendStatus(401);
-
-    Usuario.find()
-      .then((usuarios) => {
-        res.send(usuarios);
-      })
-      .catch((error) => {
-        res.status(500).send('Erro ao obter usuários: ' + error);
-      });
+    try{
+      const usuarios = await Usuario.find();
+      res.send(usuarios);
+    }
+    catch(error){
+      res.status(500).send('Erro ao obter usuários: ' + error);
+    };
   });
   
   router.post('/usuario/login', async (req, res) => {
@@ -127,18 +126,18 @@ const options = {
     }
   })
 
-  router.delete('/usuario/:id', verifyToken, (req, res) => {
+  router.delete('/usuario/:id', verifyToken, async (req, res) => {
     if(tokenChallenge(req.token, res))
         return res.sendStatus(401);
-
-    const id = req.params.id;
-    Usuario.findByIdAndDelete(id)
-      .then(() => {
-        res.send('Usuário excluído com sucesso');
-      })
-      .catch((error) => {
-        res.status(400).send('Erro ao excluir usuário: ' + error);
-      });
+        
+    try{
+      const id = req.params.id;
+      const usuarioDeleted = await Usuario.findByIdAndDelete(id)
+      res.send('Usuário excluído com sucesso' + usuarioDeleted);
+    }
+    catch(error) {
+      res.status(400).send('Erro ao excluir usuário: ' + error);
+    };
   });
 
 
