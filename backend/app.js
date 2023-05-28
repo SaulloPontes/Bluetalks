@@ -44,7 +44,7 @@ const options = {
     router.get('/usuario/:id', verifyToken, async (req, res) => {
       if(tokenChallenge(req.token, res))
         return res.sendStatus(401);
-        
+
       try {
         const id = req.params.id;
         const usuario = await Usuario.findById(id);
@@ -62,7 +62,7 @@ const options = {
     router.post('/usuario', (req, res) => {
       if(tokenChallenge(req.token, res))
         return res.sendStatus(401);
-        
+
       const usuario = new Usuario(req.body);
       usuario.save()
         .then(() => {
@@ -77,7 +77,7 @@ const options = {
   router.put('/usuario/:id', verifyToken, (req, res) => {
     if(tokenChallenge(req.token, res))
         return res.sendStatus(401);
-        
+
     const id = req.params.id;
     Usuario.findByIdAndUpdate(id, req.body)
       .then(() => {
@@ -92,7 +92,7 @@ const options = {
   router.get('/usuario', verifyToken, async (req, res) => {
     if(tokenChallenge(req.token, res))
         return res.sendStatus(401);
-        
+
     if(tokenChallenge(req.token, res))
       return res.sendStatus(401);
 
@@ -106,9 +106,6 @@ const options = {
   });
   
   router.post('/usuario/login', async (req, res) => {
-    if(tokenChallenge(req.token, res))
-        return res.sendStatus(401);
-        
     try {
       const { email, senha } = req.body;
       const usuario = await Usuario.findOne({ email });
@@ -133,7 +130,7 @@ const options = {
   router.delete('/usuario/:id', verifyToken, (req, res) => {
     if(tokenChallenge(req.token, res))
         return res.sendStatus(401);
-        
+
     const id = req.params.id;
     Usuario.findByIdAndDelete(id)
       .then(() => {
@@ -153,7 +150,7 @@ const options = {
   router.post('/usuarios-responsaveis', async (req, res) => {
     if(tokenChallenge(req.token, res))
         return res.sendStatus(401);
-        
+
     try {
       const usuarioResponsavel = await UsuarioResponsavel.create(req.body);
       res.status(201).json(usuarioResponsavel);
@@ -166,7 +163,7 @@ const options = {
   router.get('/usuarios-responsaveis', async (req, res) => {
     if(tokenChallenge(req.token, res))
         return res.sendStatus(401);
-        
+
     try {
       const usuariosResponsaveis = await UsuarioResponsavel.find();
       res.json(usuariosResponsaveis);
@@ -179,7 +176,7 @@ const options = {
   router.get('/usuarios-responsaveis/:id', async (req, res) => {
     if(tokenChallenge(req.token, res))
         return res.sendStatus(401);
-        
+
     const { id } = req.params;
     try {
       const usuarioResponsavel = await UsuarioResponsavel.findById(id);
@@ -197,7 +194,7 @@ const options = {
   router.put('/usuarios-responsaveis/:id', async (req, res) => {
     if(tokenChallenge(req.token, res))
         return res.sendStatus(401);
-        
+
     const { id } = req.params;
     try {
       const usuarioResponsavel = await UsuarioResponsavel.findByIdAndUpdate(id, req.body, { new: true });
@@ -215,7 +212,7 @@ const options = {
   router.delete('/usuarios-responsaveis/:id', async (req, res) => {
     if(tokenChallenge(req.token, res))
         return res.sendStatus(401);
-        
+
     const { id } = req.params;
     try {
       const usuarioResponsavel = await UsuarioResponsavel.findByIdAndDelete(id);
@@ -239,7 +236,7 @@ const options = {
   router.post('/contatos-usuario', async (req, res) => {
     if(tokenChallenge(req.token, res))
         return res.sendStatus(401);
-        
+
     try {
       const contatoUsuario = await ContatoUsuario.create(req.body);
       res.status(201).json(contatoUsuario);
@@ -252,7 +249,7 @@ const options = {
   router.get('/contatos-usuario', async (req, res) => {
     if(tokenChallenge(req.token, res))
         return res.sendStatus(401);
-        
+
     try {
       const contatosUsuario = await ContatoUsuario.find();
       res.json(contatosUsuario);
@@ -265,7 +262,7 @@ const options = {
   router.get('/contatos-usuario/:id', async (req, res) => {
     if(tokenChallenge(req.token, res))
         return res.sendStatus(401);
-        
+
     const { id } = req.params;
     try {
       const contatoUsuario = await ContatoUsuario.findById(id);
@@ -283,7 +280,7 @@ const options = {
   router.put('/contatos-usuario/:id', async (req, res) => {
     if(tokenChallenge(req.token, res))
         return res.sendStatus(401);
-        
+
     const { id } = req.params;
     try {
       const contatoUsuario = await ContatoUsuario.findByIdAndUpdate(id, req.body, { new: true });
@@ -301,7 +298,7 @@ const options = {
   router.delete('/contatos-usuario/:id', async (req, res) => {
     if(tokenChallenge(req.token, res))
         return res.sendStatus(401);
-        
+
     const { id } = req.params;
     try {
       const contatoUsuario = await ContatoUsuario.findByIdAndDelete(id);
@@ -322,7 +319,7 @@ const options = {
     router.get('/figuras', async (req, res) => {
       if(tokenChallenge(req.token, res))
         return res.sendStatus(401);
-        
+
       try {
         const figuras = await Figura.find();
         res.json(figuras);
@@ -335,7 +332,7 @@ const options = {
     router.post('/figuras', async (req, res) => {
       if(tokenChallenge(req.token, res))
         return res.sendStatus(401);
-        
+
       try {
         const novaFigura = new Figura(req.body);
         await novaFigura.save();
@@ -349,7 +346,7 @@ const options = {
     router.get('/figuras/:id', async (req, res) => {
       if(tokenChallenge(req.token, res))
         return res.sendStatus(401);
-        
+
       try {
         const figura = await Figura.findById(req.params.id);
         if (figura) {
@@ -366,7 +363,7 @@ const options = {
     router.put('/figuras/:id', async (req, res) => {
       if(tokenChallenge(req.token, res))
         return res.sendStatus(401);
-        
+
       try {
         const figura = await Figura.findByIdAndUpdate(req.params.id, req.body, { new: true });
         if (figura) {
@@ -383,7 +380,7 @@ const options = {
     router.delete('/figuras/:id', async (req, res) => {
       if(tokenChallenge(req.token, res))
         return res.sendStatus(401);
-        
+
       try {
         const figura = await Figura.findByIdAndDelete(req.params.id);
         if (figura) {
@@ -403,7 +400,7 @@ const options = {
     router.get('/categoria', async (req, res) => {
       if(tokenChallenge(req.token, res))
         return res.sendStatus(401);
-        
+
       try {
         const categorias = await Categoria.find();
         res.json(categorias);
@@ -415,7 +412,7 @@ const options = {
     router.get('/categoria/:id', async (req, res) => {
       if(tokenChallenge(req.token, res))
         return res.sendStatus(401);
-        
+
       try {
         const categoria = await Categoria.findById(req.params.id);
         if (categoria) {
@@ -431,7 +428,7 @@ const options = {
     router.post('/categoria', async (req, res) => {
       if(tokenChallenge(req.token, res))
         return res.sendStatus(401);
-        
+
       try {
         const novaCategoria = new Categoria(req.body);
         await novaCategoria.save();
@@ -444,7 +441,7 @@ const options = {
     router.put('/categoria/:id', async (req, res) => {
       if(tokenChallenge(req.token, res))
         return res.sendStatus(401);
-        
+
       try {
         const categoria = await Categoria.findByIdAndUpdate(req.params.id, req.body, { new: true });
         if (categoria) {
@@ -460,7 +457,7 @@ const options = {
     router.delete('/categoria/:id', async (req, res) => {
       if(tokenChallenge(req.token, res))
         return res.sendStatus(401);
-        
+
       try {
         const categoria = await Categoria.findByIdAndDelete(req.params.id);
         if (categoria) {
@@ -480,7 +477,7 @@ const options = {
     router.get('/categoria-figuras', async (req, res) => {
       if(tokenChallenge(req.token, res))
         return res.sendStatus(401);
-        
+
       try {
         const categoriaFiguras = await CategoriaFigura.find();
         res.json(categoriaFiguras);
@@ -492,7 +489,7 @@ const options = {
     router.post('/categoria-figuras', async (req, res) => {
       if(tokenChallenge(req.token, res))
         return res.sendStatus(401);
-        
+
       try {
         const novaCategoriaFigura = new CategoriaFigura(req.body);
         await novaCategoriaFigura.save();
@@ -505,7 +502,7 @@ const options = {
     router.get('/categoria-figuras/:id', async (req, res) => {
       if(tokenChallenge(req.token, res))
         return res.sendStatus(401);
-        
+
       try {
         const categoriaFigura = await CategoriaFigura.findById(req.params.id);
         if (categoriaFigura) {
@@ -521,7 +518,7 @@ const options = {
     router.put('/categoria-figuras/:id', async (req, res) => {
       if(tokenChallenge(req.token, res))
         return res.sendStatus(401);
-        
+
       try {
         const categoriaFigura = await CategoriaFigura.findByIdAndUpdate(req.params.id, req.body, { new: true });
         if (categoriaFigura) {
@@ -537,7 +534,7 @@ const options = {
     router.delete('/categoria-figuras/:id', async (req, res) => {
       if(tokenChallenge(req.token, res))
         return res.sendStatus(401);
-        
+
       try {
         const categoriaFigura = await CategoriaFigura.findByIdAndDelete(req.params.id);
         if (categoriaFigura) {
