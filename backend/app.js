@@ -680,6 +680,129 @@ router.delete('/usuario/:usuarioId/figuras', async (req, res) => {
 });
 
 
+// RELAÇAO CONTATO E USUARIO
+
+
+router.post('/usuario/:id/contato', async (req, res) => {
+  const { numero, nome, relacao } = req.body;
+  const usuarioId = req.params.id;
+
+  try {
+    const usuario = await Usuario.findById(usuarioId);
+    if (!usuario) {
+      return res.status(404).json({ message: 'Usuário não encontrado' });
+    }
+
+    const contato = new ContatoUsuario({
+      usuario: usuarioId,
+      numero,
+      nome,
+      relacao
+    });
+
+    const novoContato = await contato.save();
+    usuario.contatos.push(novoContato._id);
+    await usuario.save();
+
+    res.status(201).json(novoContato);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
+
+router.get('/usuario/:id/contatos', async (req, res) => {
+  const usuarioId = req.params.id;
+
+  try {
+    const usuario = await Usuario.findById(usuarioId).populate('contatos');
+    if (!usuario) {
+      return res.status(404).json({ message: 'Usuário não encontrado' });
+    }
+
+    res.json(usuario.contatos);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+
+router.get('/usuario/:id/contatos/:contatoId', async (req, res) => {
+  const usuarioId = req.params.id;
+  const contatoId = req.params.contatoId;
+
+  try {
+    const usuario = await Usuario.findById(usuarioId).populate('contatos');
+    if (!usuario) {
+      return res.status(404).json({ message: 'Usuário não encontrado' });
+    }
+
+    const contato = usuario.contatos.find(contato => contato._id.toString() === contatoId);
+    if (!contato) {
+      return res.status(404).json({ message: 'Contato não encontrado' });
+    }
+
+    res.json(contato);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+
+router.put('/usuario/:id/contato/:contatoId', async (req, res) => {
+  const usuarioId = req.params.id;
+  const contatoId = req.params.contatoId;
+  const { numero, nome, relacao } = req.body;
+
+  try {
+    const usuario = await Usuario.findById(usuarioId).populate('contatos');
+    if (!usuario) {
+      return res.status(404).json({ message: 'Usuário não encontrado' });
+    }
+
+    const contato = usuario.contatos.find(contato => contato._id.toString() === contatoId);
+    if (!contato) {
+      return res.status(404).json({ message: 'Contato não encontrado' });
+    }
+
+    contato.numero = numero;
+    contato.nome = nome;
+    contato.relacao = relacao;
+    await contato.save();
+
+    res.json(contato);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
+
+router.delete('/usuarios/:id/contato/:contatoId', async (req, res) => {
+  const usuarioId = req.params.id;
+  const contatoId = req.params.contatoId;
+
+  try {
+    const usuario = await Usuario.findById(usuarioId).populate('contatos');
+    if (!usuario) {
+      return res.status(404).json({ message: 'Usuário não encontrado' });
+    }
+
+    const contatoIndex = usuario.contatos.findIndex(contato => contato._id.toString() === contatoId);
+    if (contatoIndex === -1) {
+      return res.status(404).json({ message: 'Contato não encontrado' });
+    }
+
+    usuario.contatos.splice(contatoIndex, 1);
+    await usuario.save();
+
+    await ContatoUsuario.findByIdAndRemove(contatoId);
+
+    res.json({ message: 'Contato removido com sucesso' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 
 
 app.use('/', router);
