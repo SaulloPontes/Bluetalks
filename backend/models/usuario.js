@@ -11,7 +11,8 @@ const UsuarioSchema = new mongoose.Schema({
     observacao :{ type: String, required: true},
     foto :{ type: String, required: true},
     apelido : { type: String, required: true },
-    figuras: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Figura' }]
+    figuras: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Figura' }],
+    contatos : [{ type: mongoose.Schema.Types.ObjectId, ref: 'ContatoUsuario' }]
   },{timestamps: true});
 
 
