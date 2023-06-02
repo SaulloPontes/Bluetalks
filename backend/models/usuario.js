@@ -12,7 +12,7 @@ const UsuarioSchema = new mongoose.Schema({
     foto :{ type: String, required: true},
     apelido : { type: String, required: true },
     figuras: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Figura' }],
-    contatos : [{ type: mongoose.Schema.Types.ObjectId, ref: 'ContatoUsuario' }]
+    contatos : [{ type: mongoose.Schema.Types.ObjectId, ref: 'ContatoUsuario' }],
   },{timestamps: true});
 
 
