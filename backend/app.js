@@ -727,9 +727,9 @@ router.get('/usuario/:id/contatos', async (req, res) => {
 });
 
 
-router.get('/usuario/:id/contatos/:contatoId', async (req, res) => {
+router.get('/usuario/:id/contatos/:contatoNome', async (req, res) => {
   const usuarioId = req.params.id;
-  const contatoId = req.params.contatoId;
+  const contatoNome = req.params.contatoNome;
 
   try {
     const usuario = await Usuario.findById(usuarioId).populate('contatos');
@@ -737,7 +737,7 @@ router.get('/usuario/:id/contatos/:contatoId', async (req, res) => {
       return res.status(404).json({ message: 'Usuário não encontrado' });
     }
 
-    const contato = usuario.contatos.find(contato => contato._id.toString() === contatoId);
+    const contato = usuario.contatos.find(contato => contato.nome === contatoNome);
     if (!contato) {
       return res.status(404).json({ message: 'Contato não encontrado' });
     }
@@ -749,9 +749,10 @@ router.get('/usuario/:id/contatos/:contatoId', async (req, res) => {
 });
 
 
-router.put('/usuario/:id/contato/:contatoId', async (req, res) => {
+
+router.put('/usuario/:id/contato/:contatoNome', async (req, res) => {
   const usuarioId = req.params.id;
-  const contatoId = req.params.contatoId;
+  const contatoNome = req.params.contatoNome;
   const { numero, nome, relacao } = req.body;
 
   try {
@@ -760,7 +761,7 @@ router.put('/usuario/:id/contato/:contatoId', async (req, res) => {
       return res.status(404).json({ message: 'Usuário não encontrado' });
     }
 
-    const contato = usuario.contatos.find(contato => contato._id.toString() === contatoId);
+    const contato = usuario.contatos.find(contato => contato.nome === contatoNome);
     if (!contato) {
       return res.status(404).json({ message: 'Contato não encontrado' });
     }
@@ -777,9 +778,10 @@ router.put('/usuario/:id/contato/:contatoId', async (req, res) => {
 });
 
 
-router.delete('/usuarios/:id/contato/:contatoId', async (req, res) => {
+
+router.delete('/usuario/:id/contato/:contatoNome', async (req, res) => {
   const usuarioId = req.params.id;
-  const contatoId = req.params.contatoId;
+  const contatoNome = req.params.contatoNome;
 
   try {
     const usuario = await Usuario.findById(usuarioId).populate('contatos');
@@ -787,11 +789,12 @@ router.delete('/usuarios/:id/contato/:contatoId', async (req, res) => {
       return res.status(404).json({ message: 'Usuário não encontrado' });
     }
 
-    const contatoIndex = usuario.contatos.findIndex(contato => contato._id.toString() === contatoId);
+    const contatoIndex = usuario.contatos.findIndex(contato => contato.nome === contatoNome);
     if (contatoIndex === -1) {
       return res.status(404).json({ message: 'Contato não encontrado' });
     }
 
+    const contatoId = usuario.contatos[contatoIndex]._id;
     usuario.contatos.splice(contatoIndex, 1);
     await usuario.save();
 
@@ -804,6 +807,101 @@ router.delete('/usuarios/:id/contato/:contatoId', async (req, res) => {
 });
 
 
+
+  // rotas get/put/post/delete usuario responsavel para o usuario
+router.post('/usuario/:usuarioId/responsavel', async (req, res) => {
+  const usuarioId = req.params.usuarioId;
+  const { nomeResponsavel } = req.body;
+
+  try {
+    const usuario = await Usuario.findOne({ nome: nomeResponsavel });
+    if (!usuario) {
+      return res.status(404).json({ message: 'Usuário responsável não encontrado' });
+    }
+
+    const usuarioResponsavelObj = new UsuarioResponsavel({
+      usuario_responsavel: usuario._id,
+      usuario_dependente: usuarioId
+    });
+
+    await usuarioResponsavelObj.save();
+
+    res.status(201).json({ message: 'Usuário responsável adicionado com sucesso' });
+  } catch (error) {
+    console.error('Erro ao adicionar o usuário responsável:', error);
+    res.status(500).json({ message: 'Erro interno do servidor' });
+  }
+});
+
+// Obter usuário responsável de um usuário específico
+router.get('/usuario/:usuarioId/responsavel', async (req, res) => {
+  const usuarioId = req.params.usuarioId;
+
+  try {
+    const usuarioResponsavel = await UsuarioResponsavel.findOne({ usuario_dependente: usuarioId })
+      .populate('usuario_responsavel')
+      .exec();
+
+    if (!usuarioResponsavel) {
+      return res.status(404).json({ message: 'Usuário responsável não encontrado' });
+    }
+
+    res.json(usuarioResponsavel.usuario_responsavel);
+  } catch (error) {
+    console.error('Erro ao obter o usuário responsável:', error);
+    res.status(500).json({ message: 'Erro interno do servidor' });
+  }
+});
+
+// Atualizar usuário responsável de um usuário específico
+router.put('/usuario/:usuarioId/responsavel', async (req, res) => {
+  const usuarioId = req.params.usuarioId;
+  const { nomeResponsavel } = req.body;
+
+  try {
+    const usuario = await Usuario.findOne({ nome: nomeResponsavel });
+    if (!usuario) {
+      return res.status(404).json({ message: 'Usuário responsável não encontrado' });
+    }
+
+    const usuarioResponsavel = await UsuarioResponsavel.findOneAndUpdate(
+      { usuario_dependente: usuarioId },
+      { usuario_responsavel: usuario._id },
+      { new: true }
+    );
+
+    if (!usuarioResponsavel) {
+      return res.status(404).json({ message: 'Usuário responsável não encontrado' });
+    }
+
+    res.json({ message: 'Usuário responsável atualizado com sucesso' });
+  } catch (error) {
+    console.error('Erro ao atualizar o usuário responsável:', error);
+    res.status(500).json({ message: 'Erro interno do servidor' });
+  }
+});
+
+// Remover usuário responsável de um usuário específico
+router.delete('/usuario/:usuarioId/responsavel', async (req, res) => {
+  const usuarioId = req.params.usuarioId;
+
+  try {
+    const usuarioResponsavel = await UsuarioResponsavel.findOneAndDelete({ usuario_dependente: usuarioId });
+
+    if (!usuarioResponsavel) {
+      return res.status(404).json({ message: 'Usuário responsável não encontrado' });
+    }
+
+    res.json({ message: 'Usuário responsável removido com sucesso' });
+  } catch (error) {
+    console.error('Erro ao remover o usuário responsável:', error);
+    res.status(500).json({ message: 'Erro interno do servidor' });
+  }
+});
+
+
+
+// FIM rotas get/put/post/delete usuario responsavel para o usuario
 
 app.use('/', router);
 app.listen(3000)
