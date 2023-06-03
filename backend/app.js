@@ -655,6 +655,29 @@ router.delete('/usuario/:usuarioId/responsavel', async (req, res) => {
   }
 });
 
+// Rota para mostrar todos os usuários e seus nomes que são dependentes de um usuário
+router.get('/usuario/:usuarioId/dependentes', async (req, res) => {
+  const usuarioId = req.params.usuarioId;
+
+  try {
+    const usuariosDependentes = await UsuarioResponsavel.find({ usuario_responsavel: usuarioId })
+      .populate('usuario_dependente', 'nome')
+      .exec();
+
+    if (!usuariosDependentes || usuariosDependentes.length === 0) {
+      return res.status(404).json({ message: 'Usuários dependentes não encontrados' });
+    }
+
+    const dependentes = usuariosDependentes.map((usuarioDependente) => ({
+      nome: usuarioDependente.usuario_dependente.nome
+    }));
+
+    res.json(dependentes);
+  } catch (error) {
+    console.error('Erro ao obter os usuários dependentes:', error);
+    res.status(500).json({ message: 'Erro interno do servidor' });
+  }
+});
 
 
 // FIM rotas get/put/post/delete usuario responsavel para o usuario
