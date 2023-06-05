@@ -564,7 +564,7 @@ router.delete('/usuario/:id/contato/:contatoNome', async (req, res) => {
 
 
 
-  // rotas get/put/post/delete usuario responsavel para o usuario
+// rotas get/put/post/delete usuario responsavel para o usuario
 router.post('/usuario/:usuarioId/responsavel', async (req, res) => {
   const usuarioId = req.params.usuarioId;
   const { nomeResponsavel } = req.body;
@@ -679,8 +679,308 @@ router.get('/usuario/:usuarioId/dependentes', async (req, res) => {
   }
 });
 
+// Rota para obter um usuário dependente pelo nome
+router.get('/usuario/dependente/:nome', async (req, res) => {
+  const nomeDependente = req.params.nome;
+
+  try {
+    const usuario = await Usuario.findOne({ nome: nomeDependente });
+
+    if (!usuario) {
+      return res.status(404).json({ message: 'Usuário dependente não encontrado' });
+    }
+
+    const usuarioResponsavel = await UsuarioResponsavel.findOne({ usuario_dependente: usuario._id })
+      .populate('usuario_responsavel')
+      .exec();
+
+    if (!usuarioResponsavel) {
+      return res.status(404).json({ message: 'Usuário responsável não encontrado' });
+    }
+
+    res.json(usuarioResponsavel);
+  } catch (error) {
+    console.error('Erro ao obter o usuário dependente:', error);
+    res.status(500).json({ message: 'Erro interno do servidor' });
+  }
+});
+
+
 
 // FIM rotas get/put/post/delete usuario responsavel para o usuario
+
+// categorias usuario 
+
+// Rota POST para adicionar uma nova categoria para um usuário
+router.post('/usuario/:usuarioId/categoria', upload.single('imagem'), async (req, res) => {
+  try {
+    const { criador_categoria, nome_categoria, url_convite } = req.body;
+    const usuarioId = req.params.usuarioId;
+    const imagem = req.file.filename;
+    
+    const novaCategoria = new Categoria({
+      criador_categoria,
+      imagem,
+      nome_categoria,
+      url_convite,
+      figuras: []
+    });
+    
+    const usuario = await Usuario.findById(usuarioId);
+    if (!usuario) {
+      return res.status(404).json({ error: 'Usuário não encontrado' });
+    }
+    
+    novaCategoria.criador_categoria = usuario;
+    await novaCategoria.save();
+    
+    usuario.categorias.push(novaCategoria);
+    await usuario.save();
+    
+    res.status(201).json(novaCategoria);
+  } catch (error) {
+    console.error('Erro ao adicionar categoria:', error);
+    res.status(500).json({ error: 'Erro ao adicionar categoria' });
+  }
+});
+
+
+router.put('/usuario/:usuarioId/categoria/:nomeCategoria', upload.single('imagem'), async (req, res) => {
+  try {
+    const { criador_categoria, url_convite } = req.body;
+    const usuarioId = req.params.usuarioId;
+    const nomeCategoria = req.params.nomeCategoria;
+    const imagem = req.file.filename;
+    
+    const usuario = await Usuario.findById(usuarioId);
+    if (!usuario) {
+      return res.status(404).json({ error: 'Usuário não encontrado' });
+    }
+    
+    const categoria = await Categoria.findOneAndUpdate(
+      { nome_categoria: nomeCategoria, criador_categoria: usuarioId },
+      { $set: { criador_categoria, imagem, url_convite } },
+      { new: true }
+    );
+    
+    if (!categoria) {
+      return res.status(404).json({ error: 'Categoria não encontrada' });
+    }
+    
+    res.json(categoria);
+  } catch (error) {
+    console.error('Erro ao atualizar categoria:', error);
+    res.status(500).json({ error: 'Erro ao atualizar categoria' });
+  }
+});
+
+
+router.get('/usuario/:usuarioId/categorias', async (req, res) => {
+  try {
+    const usuarioId = req.params.usuarioId;
+    
+    const usuario = await Usuario.findById(usuarioId).populate('categorias');
+    if (!usuario) {
+      return res.status(404).json({ error: 'Usuário não encontrado' });
+    }
+    
+    const categorias = usuario.categorias;
+    
+    res.json(categorias);
+  } catch (error) {
+    console.error('Erro ao obter categorias:', error);
+    res.status(500).json({ error: 'Erro ao obter categorias' });
+  }
+});
+
+router.get('/usuario/:usuarioId/categoria/:nome_categoria', async (req, res) => {
+  try {
+    const usuarioId = req.params.usuarioId;
+    const nomeCategoria = req.params.nome_categoria;
+    
+    const usuario = await Usuario.findById(usuarioId).populate({
+      path: 'categorias',
+      match: { nome_categoria: nomeCategoria }
+    });
+    if (!usuario) {
+      return res.status(404).json({ error: 'Usuário não encontrado' });
+    }
+    
+    const categorias = usuario.categorias.filter(categoria => categoria.nome_categoria === nomeCategoria);
+    
+    res.json(categorias);
+  } catch (error) {
+    console.error('Erro ao obter categorias:', error);
+    res.status(500).json({ error: 'Erro ao obter categorias' });
+  }
+});
+
+
+router.delete('/usuario/:usuarioId/categoria/:nome_categoria', async (req, res) => {
+  try {
+    const usuarioId = req.params.usuarioId;
+    const nomeCategoria = req.params.nome_categoria;
+    
+    const usuario = await Usuario.findById(usuarioId).populate('categorias');
+    if (!usuario) {
+      return res.status(404).json({ error: 'Usuário não encontrado' });
+    }
+    
+    const categoria = usuario.categorias.find(categoria => categoria.nome_categoria === nomeCategoria);
+    if (!categoria) {
+      return res.status(404).json({ error: 'Categoria não encontrada' });
+    }
+    
+   
+    usuario.categorias = usuario.categorias.filter(categoria => categoria.nome_categoria !== nomeCategoria);
+    await usuario.save();
+    
+   
+    await Categoria.findByIdAndDelete(categoria._id);
+    
+    res.json({ message: 'Categoria excluída com sucesso' });
+  } catch (error) {
+    console.error('Erro ao excluir categoria:', error);
+    res.status(500).json({ error: 'Erro ao excluir categoria' });
+  }
+});
+
+// Rota POST para adicionar uma nova figura a uma categoria
+router.post('/usuario/categoria/:categoriaId/figura', upload.single('imagem'), async (req, res) => {
+  try {
+    const { usuario, nome_figura, audio, figura_favorita } = req.body;
+    const categoriaId = req.params.categoriaId;
+    const imagem = req.file.filename;
+
+    const novaFigura = new Figura({
+      usuario,
+      imagem,
+      nome_figura,
+      audio,
+      figura_favorita
+    });
+
+    const categoria = await Categoria.findById(categoriaId);
+    if (!categoria) {
+      return res.status(404).json({ error: 'Categoria não encontrada' });
+    }
+
+    novaFigura.categoria = categoria._id;
+    await novaFigura.save();
+
+    categoria.figuras.push(novaFigura._id);
+    await categoria.save();
+
+    res.status(201).json(novaFigura);
+  } catch (error) {
+    console.error('Erro ao adicionar figura:', error);
+    res.status(500).json({ error: 'Erro ao adicionar figura' });
+  }
+});
+
+// Rota PUT para atualizar uma figura em uma categoria
+router.put('/usuario/categoria/:categoriaId/figura/:figuraId', upload.single('imagem'), async (req, res) => {
+  try {
+    const { usuario, nome_figura, audio, figura_favorita } = req.body;
+    const { categoriaId, figuraId } = req.params;
+    const imagem = req.file ? req.file.filename : null;
+
+    const categoria = await Categoria.findById(categoriaId);
+    if (!categoria) {
+      return res.status(404).json({ error: 'Categoria não encontrada' });
+    }
+
+    const figura = await Figura.findById(figuraId);
+    if (!figura) {
+      return res.status(404).json({ error: 'Figura não encontrada' });
+    }
+
+    figura.usuario = usuario;
+    figura.nome_figura = nome_figura;
+    figura.audio = audio;
+    figura.figura_favorita = figura_favorita;
+    if (imagem) {
+      figura.imagem = imagem;
+    }
+
+    await figura.save();
+
+    res.json(figura);
+  } catch (error) {
+    console.error('Erro ao atualizar figura:', error);
+    res.status(500).json({ error: 'Erro ao atualizar figura' });
+  }
+});
+
+// Rota GET para obter uma figura em uma categoria
+router.get('/usuario/categoria/:categoriaId/figura/:figuraId', async (req, res) => {
+  try {
+    const { categoriaId, figuraId } = req.params;
+
+    const categoria = await Categoria.findById(categoriaId);
+    if (!categoria) {
+      return res.status(404).json({ error: 'Categoria não encontrada' });
+    }
+
+    const figura = await Figura.findById(figuraId);
+    if (!figura) {
+      return res.status(404).json({ error: 'Figura não encontrada' });
+    }
+
+    res.json(figura);
+  } catch (error) {
+    console.error('Erro ao obter figura:', error);
+    res.status(500).json({ error: 'Erro ao obter figura' });
+  }
+});
+
+// Rota DELETE para excluir uma figura de uma categoria
+router.delete('/usuario/categoria/:categoriaId/figura/:figuraId', async (req, res) => {
+  try {
+    const { categoriaId, figuraId } = req.params;
+
+    const categoria = await Categoria.findById(categoriaId);
+    if (!categoria) {
+      return res.status(404).json({ error: 'Categoria não encontrada' });
+    }
+
+    const figura = await Figura.findById(figuraId);
+    if (!figura) {
+      return res.status(404).json({ error: 'Figura não encontrada' });
+    }
+
+    await figura.remove();
+
+    categoria.figuras = categoria.figuras.filter(id => id !== figuraId);
+    await categoria.save();
+
+    res.json({ message: 'Figura excluída com sucesso' });
+  } catch (error) {
+    console.error('Erro ao excluir figura:', error);
+    res.status(500).json({ error: 'Erro ao excluir figura' });
+  }
+});
+
+router.get('/usuario/categoria/:categoriaId/figuras', async (req, res) => {
+  try {
+    const categoriaId = req.params.categoriaId;
+
+    const categoria = await Categoria.findById(categoriaId).populate('figuras');
+    if (!categoria) {
+      return res.status(404).json({ error: 'Categoria não encontrada' });
+    }
+
+    const figuras = categoria.figuras;
+
+    res.json(figuras);
+  } catch (error) {
+    console.error('Erro ao obter figuras:', error);
+    res.status(500).json({ error: 'Erro ao obter figuras' });
+  }
+});
+
+
+
 
 app.use('/', router);
 app.listen(3000)
