@@ -1,5 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+
 const multer = require('multer');
 const Usuario = require('./models/usuario');
 const UsuarioResponsavel = require('./models/usuarioResponsavel')
@@ -10,6 +13,7 @@ const Figura = require('./models/figura')
 const fs = require('fs');
 
 const mongoURI = 'mongodb+srv://saulopontes:sauloPontesBlue@clusterbluetalks.kd8yiz7.mongodb.net/blueTalksDB';
+const jwtSECRET = "bluetalks";
 
 const options = {
   useNewUrlParser: true,
@@ -71,10 +75,13 @@ router.post('/usuario', upload.single('foto'), async (req, res) => {
 });
 
 
-router.get('/usuario', async (req, res) => {
-  try {
-    const usuarios = await Usuario.find();
-    res.json(usuarios);
+router.get('/usuario', verifyToken, async (req, res) => {
+  if(tokenChallenge(req.token, res))
+        return res.sendStatus(401);
+
+    try {
+      const usuarios = await Usuario.find();
+      res.json(usuarios);
   } catch (error) {
     console.error('Erro ao obter usuários:', error);
     res.status(500).json({ message: 'Erro ao obter usuários' });
@@ -82,34 +89,62 @@ router.get('/usuario', async (req, res) => {
 });
 
 
-router.get('/usuario/:id', async (req, res) => {
-  try {
-    const id = req.params.id;
-    const usuario = await Usuario.findById(id);
-    if (!usuario) {
-      res.status(404).json({ message: 'Usuário não encontrado' });
-      return;
-    }
-    res.json(usuario);
+router.get('/usuario/:id', verifyToken, async (req, res) => {
+  if(tokenChallenge(req.token, res))
+        return res.sendStatus(401);
+
+    try {
+      const id = req.params.id;
+      const usuario = await Usuario.findById(id);
+      if (!usuario) {
+        res.status(404).json({ message: 'Usuário não encontrado' });
+        return;
+      }
+      res.json(usuario);
   } catch (error) {
     console.error('Erro ao obter usuário:', error);
     res.status(500).json({ message: 'Erro ao obter usuário' });
   }
 });
 
-app.get('/usuario/:id/foto', async (req, res) => {
+router.post('/usuario/login', async (req, res) => {
   try {
-    const id = req.params.id;
-    const usuario = await Usuario.findById(id);
-    if (!usuario) {
-      res.status(404).json({ message: 'Usuário não encontrado' });
-      return;
+    const { email, senha } = req.body;
+    const usuario = await Usuario.findOne({ email });
+    if (usuario) {
+      const result = bcrypt.compare(senha, usuario.senha);
+      if (result) {
+        const token = jwt.sign({ email: usuario.email }, jwtSECRET);
+        res.json({ token });
+      } 
+      else {
+        res.status(400).json({ error: "Senha inválida" });
+      }
+    } 
+    else {
+      res.status(400).json({ error: "Email inválido" });
     }
-    const fotoPerfil = usuario.foto;
-    const caminhoFoto = 'uploads/' + fotoPerfil;
-    const foto = fs.readFileSync(caminhoFoto);
-    res.set('Content-Type', 'image/jpeg');
-    res.send(foto);
+  } catch (error) {
+    res.status(400).json({ error });
+  }
+})
+
+app.get('/usuario/:id/foto', verifyToken, async (req, res) => {
+  if(tokenChallenge(req.token, res))
+        return res.sendStatus(401);
+
+    try {
+      const id = req.params.id;
+      const usuario = await Usuario.findById(id);
+      if (!usuario) {
+        res.status(404).json({ message: 'Usuário não encontrado' });
+        return;
+      }
+      const fotoPerfil = usuario.foto;
+      const caminhoFoto = 'uploads/' + fotoPerfil;
+      const foto = fs.readFileSync(caminhoFoto);
+      res.set('Content-Type', 'image/jpeg');
+      res.send(foto);
   } catch (error) {
     console.error('Erro ao obter a foto do usuário:', error);
     res.status(500).json({ message: 'Erro ao obter a foto do usuário' });
@@ -159,15 +194,18 @@ router.put('/usuario/:id', upload.single('foto'), async (req, res) => {
 
 
 
-router.delete('/usuario/:id', async (req, res) => {
-  try {
-    const id = req.params.id;
-    const usuario = await Usuario.findByIdAndDelete(id);
-    if (!usuario) {
-      res.status(404).json({ message: 'Usuário não encontrado' });
-      return;
-    }
-    res.json({ message: 'Usuário excluído com sucesso' });
+router.delete('/usuario/:id', verifyToken, async (req, res) => {
+  if(tokenChallenge(req.token, res))
+        return res.sendStatus(401);
+
+    try {
+      const id = req.params.id;
+      const usuario = await Usuario.findByIdAndDelete(id);
+      if (!usuario) {
+        res.status(404).json({ message: 'Usuário não encontrado' });
+        return;
+      }
+      res.json({ message: 'Usuário excluído com sucesso' });
   } catch (error) {
     console.error('Erro ao excluir usuário:', error);
     res.status(500).json({ message: 'Erro ao excluir usuário' });
@@ -179,16 +217,19 @@ router.delete('/usuario/:id', async (req, res) => {
 
 // API adicionando figuras aos usuarios
 
-router.get('/usuario/:usuarioId/figuras', async (req, res) => {
+router.get('/usuario/:usuarioId/figuras', verifyToken, async (req, res) => {
   const usuarioId = req.params.usuarioId;
 
-  try {
-    const usuario = await Usuario.findById(usuarioId).populate('figuras');
-    if (!usuario) {
-      return res.status(404).json({ message: 'Usuário não encontrado' });
-    }
+  if(tokenChallenge(req.token, res))
+        return res.sendStatus(401);
 
-    res.status(200).json(usuario.figuras);
+    try {
+      const usuario = await Usuario.findById(usuarioId).populate('figuras');
+      if (!usuario) {
+        return res.status(404).json({ message: 'Usuário não encontrado' });
+      }
+
+      res.status(200).json(usuario.figuras);
   } catch (error) {
     console.error('Erro ao obter as figuras:', error);
     res.status(500).json({ message: 'Erro interno do servidor' });
@@ -230,9 +271,12 @@ router.post('/usuario/:usuarioId/figura', upload.fields([{ name: 'imagem', maxCo
 });
 
 // Rota para remover uma figura do usuário
-router.delete('/usuario/:usuarioId/figura/:figuraId', async (req, res) => {
+router.delete('/usuario/:usuarioId/figura/:figuraId', verifyToken, async (req, res) => {
   const usuarioId = req.params.usuarioId;
   const figuraId = req.params.figuraId;
+
+  if(tokenChallenge(req.token, res))
+        return res.sendStatus(401);
 
   try {
     const usuario = await Usuario.findById(usuarioId);
@@ -314,8 +358,11 @@ router.put('/usuario/:usuarioId/figura/:figuraId', upload.fields([{ name: 'image
 });
 
 // Rota para deletar todas as figuras de um usuário
-router.delete('/usuario/:usuarioId/figuras', async (req, res) => {
+router.delete('/usuario/:usuarioId/figuras', verifyToken, async (req, res) => {
   const usuarioId = req.params.usuarioId;
+
+  if(tokenChallenge(req.token, res))
+        return res.sendStatus(401);
 
   try {
     const usuario = await Usuario.findById(usuarioId);
@@ -351,9 +398,12 @@ router.delete('/usuario/:usuarioId/figuras', async (req, res) => {
 });
 
 // Rota para deletar uma figura pelo nome da figura
-router.delete('/usuario/:usuarioId/figura/nome/:nomeFigura', async (req, res) => {
+router.delete('/usuario/:usuarioId/figura/nome/:nomeFigura', verifyToken, async (req, res) => {
   const usuarioId = req.params.usuarioId;
   const nomeFigura = req.params.nomeFigura;
+
+  if(tokenChallenge(req.token, res))
+        return res.sendStatus(401);
 
   try {
     const usuario = await Usuario.findById(usuarioId);
@@ -439,9 +489,12 @@ router.put('/usuario/:usuarioId/figura/nome/:nomeFigura', upload.fields([{ name:
 // RELAÇAO CONTATO E USUARIO
 
 
-router.post('/usuario/:id/contato', async (req, res) => {
+router.post('/usuario/:id/contato', verifyToken, async (req, res) => {
   const { numero, nome, relacao } = req.body;
   const usuarioId = req.params.id;
+
+  if(tokenChallenge(req.token, res))
+        return res.sendStatus(401);
 
   try {
     const usuario = await Usuario.findById(usuarioId);
@@ -467,8 +520,11 @@ router.post('/usuario/:id/contato', async (req, res) => {
 });
 
 
-router.get('/usuario/:id/contatos', async (req, res) => {
+router.get('/usuario/:id/contatos', verifyToken, async (req, res) => {
   const usuarioId = req.params.id;
+
+  if(tokenChallenge(req.token, res))
+        return res.sendStatus(401);
 
   try {
     const usuario = await Usuario.findById(usuarioId).populate('contatos');
@@ -981,7 +1037,46 @@ router.get('/usuario/categoria/:categoriaId/figuras', async (req, res) => {
 
 
 
+  function verifyToken(req,res,next){
+    const bearerHeader = req.headers['authorization'];
+    if(bearerHeader){
+        const bearer = bearerHeader.split(' ');
+        const bearerToken = bearer[1];
+        req.token = bearerToken;
 
-app.use('/', router);
-app.listen(3000)
-console.log("Servidor funcionando ")
+        next();
+    }else{
+        res.sendStatus(401);
+    }
+  }
+
+  function tokenChallenge(token, res){
+    jwt.verify(token, 'secretKey', (err, authData) => {
+      if (err)
+        return !!err;
+    })
+  }
+
+  function verifyToken(req,res,next){
+    const bearerHeader = req.headers['authorization'];
+    if(bearerHeader){
+        const bearer = bearerHeader.split(' ');
+        const bearerToken = bearer[1];
+        req.token = bearerToken;
+
+        next();
+    }else{
+        res.sendStatus(401);
+    }
+  }
+
+  function tokenChallenge(token, res){
+    jwt.verify(token, 'secretKey', (err, authData) => {
+      if (err)
+        return !!err;
+    })
+  }
+
+  app.use('/', router);
+  app.listen(3000)
+  console.log("Servidor funcionando ")
