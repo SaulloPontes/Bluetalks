@@ -98,8 +98,7 @@ html {
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: #0053AD;
-    border-radius: 10px;
+    background-color: #70aef1;
 }
 
 ::-webkit-scrollbar-track {

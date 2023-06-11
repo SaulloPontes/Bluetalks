@@ -1,4 +1,4 @@
-headerComponent = `<header class="navbar navbar-expand-sm bg-body-tertiary p-0 header">
+headerComponent = `<header class="navbar navbar-expand-sm bg-body-tertiary p-0 header fixed-top">
         <div class="container-fluid bg-primary px-5">
           <a class="navbar-brand col-md-3 col-lg-2 me-0 fs-2 text-light" href="#">Bluetalks</a>
 
@@ -24,7 +24,7 @@ headerComponent = `<header class="navbar navbar-expand-sm bg-body-tertiary p-0 h
             </div>
         
         </div>
-      </nav>`
+      </header>`
 
 class Header extends HTMLElement {
     constructor() {

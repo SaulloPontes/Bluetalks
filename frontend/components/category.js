@@ -31,7 +31,7 @@ class Category extends HTMLElement{
         if(this.hasAttribute('image'))
             this.data.image = this.getAttribute('image');
         else
-            this.data.image = "/assets/Imagens/blu.JPG";
+            this.data.image = "../../assets/Imagens/blu.JPG";
         if(this.hasAttribute('name'))
             this.data.name = this.getAttribute('name');
     }
