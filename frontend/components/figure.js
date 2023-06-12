@@ -25,7 +25,7 @@ class Figure extends HTMLElement{
     
     setStyle(){
         this.classList.add("col-md-5");
-        this.classList.add("col-lg-3");
+        this.classList.add("col-lg-2");
         this.classList.add("text-center");
     }
 

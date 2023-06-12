@@ -23,7 +23,8 @@ class Category extends HTMLElement{
     }
 
     setStyle(){
-        this.classList.add("col");
+        this.classList.add("col-md-5");
+        this.classList.add("col-lg-2");
         this.classList.add("text-center");
     }
 
