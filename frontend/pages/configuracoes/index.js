@@ -5,7 +5,6 @@ function setData() {
     .then(response => {
         const container = document.getElementById("categorias")
         response.data.forEach(element => {
-            console.log(element)
             container.innerHTML += `<category-component id="${element._id}" name="${element.nome}" image="${getPhotoUrl(element.imagem)}"></category-component>`
         })
     })
