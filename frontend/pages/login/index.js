@@ -5,7 +5,6 @@ function login(){
         "senha": document.getElementById("senha").value
     })
     .then(response => {
-        console.log(response.data)
         localStorage.setItem("token", response.data.token)
         localStorage.setItem("userId", response.data.usuario._id)
         window.location.href = "../index/index.html"

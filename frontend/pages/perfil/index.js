@@ -4,7 +4,6 @@ function setData() {
     axios
     .get(`http://localhost:3000/usuario/${profileId}`, { headers: {Authorization: `Bearer ${localStorage.getItem("token")}`}})
     .then(response => {
-        console.log(response.data)
         document.getElementById("foto").src = getPhotoUrl(response.data.foto)
         document.getElementById("nome").innerHTML = response.data.nome
         document.getElementById("observacao").innerHTML = response.data.observacao

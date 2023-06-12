@@ -6,7 +6,6 @@ function setData() {
     .then(response => {
         const container = document.getElementById("figuras")
         response.data.forEach(element => {
-            console.log(element)
             container.innerHTML += `<figure-component id="${element._id}" name="${element.nome}" image="${getPhotoUrl(element.imagem)}" audio="${getPhotoUrl(element.audio)}"></figure-component>`
         })
     })
