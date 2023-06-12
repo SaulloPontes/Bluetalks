@@ -1,4 +1,3 @@
-const apiUrl = "http://localhost:3000";
 function setPerfis() {
     axios
     .get(`${apiUrl}/usuario/${localStorage.getItem('userId')}/associados`, { headers: {Authorization: `Bearer ${localStorage.getItem("token")}`}})
@@ -9,7 +8,5 @@ function setPerfis() {
         });
     })
 }
-
-const getPhotoUrl = (photo) => photo ? apiUrl + '/image/' + photo : '../../assets/Imagens/blu.JPG'
 
 setPerfis();

@@ -132,3 +132,13 @@ html {
     min-width: 125px;
     object-fit: cover;
 }
+
+.icon-badge-container {
+    position: relative;
+    left: 80%;
+    height: 30px;
+    width: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

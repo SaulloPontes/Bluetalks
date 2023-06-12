@@ -1,5 +1,8 @@
 const categoryComponent = (id, name, imageUrl) => `
 <div class="shadow border p-1 col rounded" onclick="(function() { window.location.href = '../figuras/figuras.html#${id}' })()" style="min-width: 200px; max-width: 200px;">
+    <div class="icon-badge-container rounded" onclick="handleEditCategory(event, '${id}')">
+        <img class="img-w" src="../../assets/Imagens/Edit.svg" alt="">
+    </div>
     <a>
         <img src="${imageUrl}" class="img-category img-fluid mt-2"
         width="100%" alt="">
@@ -23,8 +26,7 @@ class Category extends HTMLElement{
     }
 
     setStyle(){
-        this.classList.add("col-md-5");
-        this.classList.add("col-lg-2");
+        this.classList.add("col");
         this.classList.add("text-center");
     }
 

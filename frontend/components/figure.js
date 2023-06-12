@@ -1,5 +1,8 @@
 const figureElement = (id, name, imageUrl, audioUrl) => `
-<div class="shadow mb-4 border p-1 col rounded" style="min-width: 200px; max-width: 200px;" onclick="(function(){ document.getElementById('${id}-audio').play()})()">
+<div class="shadow mb-4 border p-1 col rounded" style="min-width: 200px; max-width: 200px;" onclick="handleOnFigureClick('${id}-audio')">
+    <div class="icon-badge-container rounded" onclick="handleEditFigure(event, '${id}')">
+        <img class="img-w" src="../../assets/Imagens/Edit.svg" alt="">
+    </div>
     <a>
         <img class="img-category img-fluid mt-2" src="${imageUrl}" class="border border-dark mt-2 rounded"
         width="100%" alt="">
@@ -9,6 +12,10 @@ const figureElement = (id, name, imageUrl, audioUrl) => `
     </div>
     <audio id=${id}-audio src=${audioUrl}></audio>
 </div>`;
+
+function handleOnFigureClick(id){
+    document.getElementById(id).play()
+}
 
 class Figure extends HTMLElement{
     data = {};
@@ -24,8 +31,7 @@ class Figure extends HTMLElement{
     }
     
     setStyle(){
-        this.classList.add("col-md-5");
-        this.classList.add("col-lg-2");
+        this.classList.add("col");
         this.classList.add("text-center");
     }
 

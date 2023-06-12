@@ -7,9 +7,9 @@
     <title>Bluetalks</title>
 
     <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
       rel="stylesheet"
-      integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
+      integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
       crossorigin="anonymous"
     />
     <link rel="stylesheet" href="../../assets/Css/Style.css" />
@@ -23,21 +23,161 @@
   <body class="h-100 bg-body-tertiary">
     <header-component></header-component>
     <main class="container-fluid h-100 p-sm-0">
-      <div class="row h-100 w-100 justify-content-center m-sm-0">
+      <div class="row h-100   ">
         <navbar-component current="categorias"></navbar-component>
 
         <div
           class="mt-5 offset-1 col-8 col-sm p-3 mb-5 bg-body-tertiary rounded w-100 w-lg-auto"
         >
+          <div class="row col-2 offset-8 mt-2">
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-bs-toggle="modal"
+              data-bs-target="#newCategoriaModal"
+            >
+              Adicionar Categoria
+            </button>
+          </div>
           <div class="row mt-4 ms-2">
             <div
               id="categorias"
-              class="row rounded mb-5 rounded p-3 gap-4 justify-content-center justify-content-lg-start justify-content-xl-start"
+              class="row row-cols-md-2 row-cols-lg-3 row-cols-xl-5 rounded mb-5 rounded p-3 gap-4 justify-content-center justify-content-lg-start justify-content-xl-start"
             ></div>
           </div>
         </div>
       </div>
     </main>
-    <script src="./index.js"></script>
+
+    <div
+      class="modal fade"
+      id="newCategoriaModal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Nova Categoria</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="nomeCategoria" class="form-label"
+                >Nome da Categoria:</label
+              >
+              <input
+                type="text"
+                id="nomeCategoria"
+                name="nomeCategoria"
+                class="form-control"
+                required
+              /><br />
+            </div>
+            <div class="mb-3">
+              <label for="imagem" class="form-label">Imagem:</label>
+              <input
+                type="file"
+                id="imagem"
+                name="imagem"
+                accept="image/*"
+                class="form-control"
+                required
+              /><br />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-primary"
+              type="submit"
+              value="Enviar"
+              onclick="postNewCategoria()"
+            >
+              Adicionar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="editCategoriaModalContainer">
+      <button
+        id="editCategoriaModalButton"
+        type="button"
+        class="hidden"
+        data-bs-toggle="modal"
+        data-bs-target="#editCategoriaModal"
+      ></button>
+      <div
+        class="modal fade"
+        id="editCategoriaModal"
+        tabindex="-1"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Editar Categoria</h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <div class="mb-3">
+                <label for="editNomeCategoria" class="form-label">
+                  Nome da Categorai:
+                </label>
+                <input
+                  type="text"
+                  id="editNomeCategoria"
+                  name="editNomeCategoria"
+                  class="form-control"
+                  required
+                /><br />
+              </div>
+              <div class="mb-3">
+                <label for="editImagem" class="form-label"
+                  >Imagem: (Opcional)</label
+                >
+                <input
+                  type="file"
+                  id="editImagem"
+                  name="editImagem"
+                  accept="image/*"
+                  class="form-control"
+                  required
+                /><br />
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                id="editCategoriaButton"
+                type="button"
+                class="btn btn-primary"
+                value="Enviar"
+              >
+                Editar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+      crossorigin="anonymous"
+    ></script>
+    <script src="./index.js" type="text/javascript"></script>
   </body>
 </html>

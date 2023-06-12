@@ -7,6 +7,7 @@ function login(){
     .then(response => {
         localStorage.setItem("token", response.data.token)
         localStorage.setItem("userId", response.data.usuario._id)
+        localStorage.setItem("user", JSON.stringify(response.data.usuario))
         window.location.href = "../index/index.html"
     })
     .catch(error => {
