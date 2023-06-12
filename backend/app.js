@@ -154,7 +154,7 @@ router.get('/usuario/:id/foto', verifyToken, async (req, res) => {
 router.put('/usuario/:id', upload.single('foto'), async (req, res) => {
   try {
     const id = req.params.id;
-    const { nome, email, senha, observacao, apelido } = req.body;
+    const body = req.body;
     const usuario = await Usuario.findById(id);
     if (!usuario) {
       res.status(404).json({ message: 'Usuário não encontrado' });
@@ -164,22 +164,19 @@ router.put('/usuario/:id', upload.single('foto'), async (req, res) => {
 
     if (req.file) {
       const fotoPerfil = req.file.filename;
-
-      if (usuario.foto) {
-        const caminhoFotoAntiga = 'uploads/' + usuario.foto;
-        fs.unlinkSync(caminhoFotoAntiga);
-      }
-
       usuario.foto = fotoPerfil;
     }
 
+    console.log(body)
+    for (const property in body) {
+      if (!!usuario[property]){
+        usuario[property] = body[property];
+      }
+      else if (property == "observacao")
+        usuario.observacao = body[property]
+    }
 
-    usuario.nome = nome;
-    usuario.email = email;
-    usuario.senha = senha;
-    usuario.observacao = observacao;
-    usuario.apelido = apelido;
-
+    console.log(usuario)
     await usuario.save();
     res.json(usuario);
   } catch (error) {
@@ -211,11 +208,30 @@ router.delete('/usuario/:id', verifyToken, async (req, res) => {
 
 // API adicionando figuras aos usuarios
 
+router.get('/figura/:figuraId', verifyToken, async (req, res) => {
+  if(tokenChallenge(req.token, res))
+    return res.sendStatus(401);
+
+  try {
+    const figuraId = req.params.figuraId;
+    const figura = await Figura.findById(figuraId);
+    if (!figura) {
+      return res.status(404).json({ message: 'Figura não encontrada' });
+    }
+
+    res.status(200).json(figura);
+  }
+  catch (error){
+    console.error('Erro ao recuperar:', error);
+    res.status(500).json({ message: 'Erro interno do servidor' });
+  }
+})
+
 router.get('/usuario/:usuarioId/figuras', verifyToken, async (req, res) => {
   const usuarioId = req.params.usuarioId;
 
   if(tokenChallenge(req.token, res))
-        return res.sendStatus(401);
+    return res.sendStatus(401);
 
     try {
       const usuario = await Usuario.findById(usuarioId).populate('figuras');
@@ -825,28 +841,29 @@ router.post('/usuario/:usuarioId/categoria', upload.single('imagem'), async (req
 });
 
 
-router.put('/usuario/:usuarioId/categoria/:nomeCategoria', upload.single('imagem'), async (req, res) => {
+router.put('/usuario/:usuarioId/categoria/:categoriaId', upload.single('imagem'), async (req, res) => {
   try {
-    const { criador_categoria, url_convite } = req.body;
+    const { nome } = req.body;
     const usuarioId = req.params.usuarioId;
-    const nomeCategoria = req.params.nomeCategoria;
-    const imagem = req.file.filename;
+    const categoriaId = req.params.categoriaId;
+    const imagem = req.file?.filename;
     
     const usuario = await Usuario.findById(usuarioId);
     if (!usuario) {
       return res.status(404).json({ error: 'Usuário não encontrado' });
     }
     
-    const categoria = await Categoria.findOneAndUpdate(
-      { nome_categoria: nomeCategoria, criador_categoria: usuarioId },
-      { $set: { criador_categoria, imagem, url_convite } },
-      { new: true }
-    );
-    
+    const categoria = await Categoria.findById(categoriaId);
     if (!categoria) {
       return res.status(404).json({ error: 'Categoria não encontrada' });
     }
+
+    if(nome)
+      categoria.nome = nome;
+    if(imagem)
+      categoria.imagem = imagem;
     
+    await categoria.save();
     res.json(categoria);
   } catch (error) {
     console.error('Erro ao atualizar categoria:', error);
@@ -959,11 +976,14 @@ router.post('/usuario/categoria/:categoriaId/figura', upload.fields([{ name: 'im
 });
 
 // Rota PUT para atualizar uma figura em uma categoria
-router.put('/usuario/categoria/:categoriaId/figura/:figuraId', upload.single('imagem'), async (req, res) => {
+router.put('/usuario/categoria/:categoriaId/figura/:figuraId', upload.fields([{ name: 'imagem', maxCount: 1 }, { name: 'audio', maxCount: 1 }]), async (req, res) => {
   try {
-    const { usuario, nome_figura, audio, figura_favorita } = req.body;
-    const { categoriaId, figuraId } = req.params;
-    const imagem = req.file ? req.file.filename : null;
+    const { nome, figura_favorita } = req.body;
+    const categoriaId = req.params.categoriaId;
+    const figuraId = req.params.figuraId;
+    const imagemPath = req.files['imagem'] ? req.files['imagem'][0].filename : null;
+    const audioPath = req.files['audio'] ? req.files['audio'][0].filename : null;
+
 
     const categoria = await Categoria.findById(categoriaId);
     if (!categoria) {
@@ -975,13 +995,12 @@ router.put('/usuario/categoria/:categoriaId/figura/:figuraId', upload.single('im
       return res.status(404).json({ error: 'Figura não encontrada' });
     }
 
-    figura.usuario = usuario;
-    figura.nome_figura = nome_figura;
-    figura.audio = audio;
-    figura.figura_favorita = figura_favorita;
-    if (imagem) {
-      figura.imagem = imagem;
-    }
+    if(nome)
+      figura.nome = nome;
+    if (audioPath)
+      figura.audio = audioPath;
+    if (imagemPath)
+      figura.imagem = imagemPath;
 
     await figura.save();
 

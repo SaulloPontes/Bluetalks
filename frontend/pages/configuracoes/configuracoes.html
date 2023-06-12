@@ -14,20 +14,22 @@
     />
     <link rel="stylesheet" href="../../assets/Css/Style.css" />
     <script
-    src="https://unpkg.com/axios/dist/axios.min.js"
-    type="text/javascript"
+      src="https://unpkg.com/axios/dist/axios.min.js"
+      type="text/javascript"
     ></script>
     <script src="../../helpers/loadScripts.js" type="text/javascript"></script>
   </head>
 
-  <body class="h-100">
+  <body class="h-100 bg-body-tertiary">
     <header-component></header-component>
-    <main class="container-fluid h-100">
-      <div class="row h-100 w-100 justify-content-center m-sm-0">
+    <main class="container-fluid h-100 p-sm-0">
+      <div class="row h-100 w-100 justify-content-center m-sm-0 g-0">
         <navbar-component current="configuracoes"></navbar-component>
 
-        <div class="home-content col position-relative" style="top: 50px">
-          <div>
+        <div
+          class="mt-5 col p-3 mb-5 bg-body-tertiary rounded d-flex justify-content-center"
+        >
+          <div class="row home-content col position-relative col-6">
             <div class="row justify-content-center">
               <div class="col">
                 <div class="card border-0">
@@ -56,15 +58,17 @@
                             <div class="card border-0">
                               <div class="list-group mt-2">
                                 <button
-                                data-bs-toggle="modal"
-                                data-bs-target="#editPerfilModal"
+                                  data-bs-toggle="modal"
+                                  data-bs-target="#editPerfilModal"
                                   class="list-group-item list-group-item-action"
-                                  ><img
+                                >
+                                  <img
                                     class="me-3"
                                     src="../../assets/Imagens/Filter.svg"
                                     style="width: 20px"
                                     alt="icone de editar perfil"
-                                  />Editar informações do perfil</button>
+                                  />Editar informações do perfil
+                                </button>
                                 <!-- <a
                                   href="#"
                                   class="list-group-item list-group-item-action"
@@ -125,93 +129,95 @@
       </div>
 
       <div
-      class="modal fade"
-      id="editPerfilModal"
-      tabindex="-1"
-      aria-labelledby="editPerfilModal"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="editProfileModalLabel">Editar Perfil</h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div class="modal-body">
-            <div class="mb-3">
-              <label for="editNome" class="form-label">Nome:</label
+        class="modal fade"
+        id="editPerfilModal"
+        tabindex="-1"
+        aria-labelledby="editPerfilModal"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="editProfileModalLabel">
+                Editar Perfil
+              </h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <div class="mb-3">
+                <label for="editNome" class="form-label">Nome:</label>
+                <input
+                  type="text"
+                  id="editNome"
+                  name="editNome"
+                  class="form-control"
+                  required
+                /><br />
+              </div>
+              <div class="mb-3">
+                <label for="editEmail" class="form-label">Email:</label>
+                <input
+                  type="text"
+                  id="editEmail"
+                  name="editEmail"
+                  class="form-control"
+                  required
+                /><br />
+              </div>
+              <div class="mb-3">
+                <label for="editObservacoes" class="form-label"
+                  >Observações:</label
+                >
+                <input
+                  type="text"
+                  id="editObservacoes"
+                  name="editObservacoes"
+                  class="form-control"
+                  required
+                /><br />
+              </div>
+              <div class="mb-3">
+                <label for="editContatoDeEmergencia" class="form-label"
+                  >Contato de emergência:</label
+                >
+                <input
+                  type="text"
+                  id="editContatoDeEmergencia"
+                  name="editContatoDeEmergencia"
+                  class="form-control"
+                  required
+                /><br />
+              </div>
+              <div class="mb-3">
+                <label for="editFoto" class="form-label">Imagem:</label>
+                <input
+                  type="file"
+                  id="editFoto"
+                  name="editFoto"
+                  accept="image/*"
+                  class="form-control"
+                  required
+                /><br />
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-primary"
+                value="Enviar"
+                onclick="putEditPerfil()"
               >
-              <input
-                type="text"
-                id="editNome"
-                name="editNome"
-                class="form-control"
-                required
-              /><br />
+                Salvar
+              </button>
             </div>
-            <div class="mb-3">
-              <label for="editEmail" class="form-label">Email:</label
-              >
-              <input
-                type="text"
-                id="editEmail"
-                name="editEmail"
-                class="form-control"
-                required
-              /><br />
-            </div>
-            <div class="mb-3">
-              <label for="editObservacoes" class="form-label">Observações:</label
-              >
-              <input
-                type="text"
-                id="editObservacoes"
-                name="editObservacoes"
-                class="form-control"
-                required
-              /><br />
-            </div>
-            <div class="mb-3">
-              <label for="editContatoDeEmergencia" class="form-label">Contato de emergência:</label
-              >
-              <input
-                type="text"
-                id="editContatoDeEmergencia"
-                name="editContatoDeEmergencia"
-                class="form-control"
-                required
-              /><br />
-            </div>
-            <div class="mb-3">
-              <label for="editFoto" class="form-label">Imagem:</label>
-              <input
-                type="file"
-                id="editFoto"
-                name="editFoto"
-                accept="image/*"
-                class="form-control"
-                required
-              /><br />
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-primary"
-              value="Enviar"
-              onclick="putEditPerfil()"
-            >
-              Salvar
-            </button>
           </div>
         </div>
       </div>
-    </div>
     </main>
     <footer-component></footer-component>
     <script
