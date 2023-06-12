@@ -1,11 +1,13 @@
 profileComponent = (id, name, imageUrl) => `
-<a href="/profile/${id}">
-    <img src="${imageUrl}" class="rounded-circle border border-dark mt-2" alt="${name}'s profile picture" />
+<div class="shadow border p-1 col rounded" style="min-width: 200px; max-width: 200px;" onclick="(function() { window.location.href = '../perfil/perfil.html#${id}' })()">
+<a>
+    <img src="${imageUrl}" class="img-thumbnail img-fluid rounded-circle mt-2" alt="${name}'s profile picture"/>
 </a>
 <div class="row mt-3">
     <div class="h5 col font-open-sans">
         ${name}
     </div>
+</div>
 </div>`;
 
 class Profile extends HTMLElement{

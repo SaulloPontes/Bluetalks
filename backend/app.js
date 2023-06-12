@@ -115,7 +115,7 @@ router.post('/usuario/login', async (req, res) => {
       const result = bcrypt.compare(senha, usuario.senha);
       if (result) {
         const token = jwt.sign({ email: usuario.email }, jwtSECRET);
-        res.json({ token });
+        res.json({ token, usuario });
       } 
       else {
         res.status(400).json({ error: "Senha inválida" });
@@ -129,7 +129,7 @@ router.post('/usuario/login', async (req, res) => {
   }
 })
 
-app.get('/usuario/:id/foto', verifyToken, async (req, res) => {
+router.get('/usuario/:id/foto', verifyToken, async (req, res) => {
   if(tokenChallenge(req.token, res))
         return res.sendStatus(401);
 
@@ -150,8 +150,6 @@ app.get('/usuario/:id/foto', verifyToken, async (req, res) => {
     res.status(500).json({ message: 'Erro ao obter a foto do usuário' });
   }
 });
-
-
 
 router.put('/usuario/:id', upload.single('foto'), async (req, res) => {
   try {
@@ -190,22 +188,18 @@ router.put('/usuario/:id', upload.single('foto'), async (req, res) => {
   }
 });
 
-
-
-
-
 router.delete('/usuario/:id', verifyToken, async (req, res) => {
   if(tokenChallenge(req.token, res))
         return res.sendStatus(401);
 
-    try {
-      const id = req.params.id;
-      const usuario = await Usuario.findByIdAndDelete(id);
-      if (!usuario) {
-        res.status(404).json({ message: 'Usuário não encontrado' });
-        return;
-      }
-      res.json({ message: 'Usuário excluído com sucesso' });
+  try {
+    const id = req.params.id;
+    const usuario = await Usuario.findByIdAndDelete(id);
+    if (!usuario) {
+      res.status(404).json({ message: 'Usuário não encontrado' });
+      return;
+    }
+    res.json({ message: 'Usuário excluído com sucesso' });
   } catch (error) {
     console.error('Erro ao excluir usuário:', error);
     res.status(500).json({ message: 'Erro ao excluir usuário' });
@@ -485,16 +479,55 @@ router.put('/usuario/:usuarioId/figura/nome/:nomeFigura', upload.fields([{ name:
   }
 });
 
+// Relação Usuário e usuário
+
+router.get('/usuario/:usuarioId/associados', verifyToken, async (req, res) => {
+  if(tokenChallenge(req.token, res))
+    return res.sendStatus(401);
+
+  try{
+    const usuarioId = req.params.usuarioId;
+    const usuarioData = await Usuario.findById(usuarioId).populate('associados');
+
+    return res.json(usuarioData.associados);
+  }
+  catch(error){
+    res.status(400).json({ message: error.message });
+  }
+});
+
+router.post('/usuario/:usuarioId/associados/:associadoId', verifyToken, async (req, res) => {
+  if(tokenChallenge(req.token, res))
+    return res.sendStatus(401);
+
+  try{
+    const usuarioId = req.params.usuarioId;
+    const usuario = await Usuario.findById(usuarioId);
+    if (!usuario) {
+      return res.status(404).json({ message: 'Usuário não encontrado' });
+    }
+    const associadoId = req.params.associadoId;
+    const associado = await Usuario.findById(associadoId);
+    if (!associado) {
+      return res.status(404).json({ message: 'Usuário não encontrado' });
+    }
+
+    usuario.associados.push(associadoId);
+    await usuario.save();
+    return res.status(201).json({ message: 'Usuário associado com sucesso' });
+  }
+  catch(error){
+    res.status(400).json({ message: error.message });
+  }
+})
 
 // RELAÇAO CONTATO E USUARIO
-
-
 router.post('/usuario/:id/contato', verifyToken, async (req, res) => {
   const { numero, nome, relacao } = req.body;
   const usuarioId = req.params.id;
 
   if(tokenChallenge(req.token, res))
-        return res.sendStatus(401);
+    return res.sendStatus(401);
 
   try {
     const usuario = await Usuario.findById(usuarioId);
@@ -519,7 +552,6 @@ router.post('/usuario/:id/contato', verifyToken, async (req, res) => {
   }
 });
 
-
 router.get('/usuario/:id/contatos', verifyToken, async (req, res) => {
   const usuarioId = req.params.id;
 
@@ -537,7 +569,6 @@ router.get('/usuario/:id/contatos', verifyToken, async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
-
 
 router.get('/usuario/:id/contatos/:contatoNome', async (req, res) => {
   const usuarioId = req.params.id;
@@ -559,8 +590,6 @@ router.get('/usuario/:id/contatos/:contatoNome', async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
-
-
 
 router.put('/usuario/:id/contato/:contatoNome', async (req, res) => {
   const usuarioId = req.params.id;
@@ -589,8 +618,6 @@ router.put('/usuario/:id/contato/:contatoNome', async (req, res) => {
   }
 });
 
-
-
 router.delete('/usuario/:id/contato/:contatoNome', async (req, res) => {
   const usuarioId = req.params.id;
   const contatoNome = req.params.contatoNome;
@@ -617,8 +644,6 @@ router.delete('/usuario/:id/contato/:contatoNome', async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
-
-
 
 // rotas get/put/post/delete usuario responsavel para o usuario
 router.post('/usuario/:usuarioId/responsavel', async (req, res) => {
@@ -770,15 +795,14 @@ router.get('/usuario/dependente/:nome', async (req, res) => {
 // Rota POST para adicionar uma nova categoria para um usuário
 router.post('/usuario/:usuarioId/categoria', upload.single('imagem'), async (req, res) => {
   try {
-    const { criador_categoria, nome_categoria, url_convite } = req.body;
+    const { nome } = req.body;
     const usuarioId = req.params.usuarioId;
     const imagem = req.file.filename;
     
     const novaCategoria = new Categoria({
-      criador_categoria,
+      criador_categoria: usuarioId,
       imagem,
-      nome_categoria,
-      url_convite,
+      nome,
       figuras: []
     });
     
@@ -831,7 +855,7 @@ router.put('/usuario/:usuarioId/categoria/:nomeCategoria', upload.single('imagem
 });
 
 
-router.get('/usuario/:usuarioId/categorias', async (req, res) => {
+router.get('/usuario/:usuarioId/categoria', async (req, res) => {
   try {
     const usuarioId = req.params.usuarioId;
     
@@ -902,17 +926,17 @@ router.delete('/usuario/:usuarioId/categoria/:nome_categoria', async (req, res) 
 });
 
 // Rota POST para adicionar uma nova figura a uma categoria
-router.post('/usuario/categoria/:categoriaId/figura', upload.single('imagem'), async (req, res) => {
+router.post('/usuario/categoria/:categoriaId/figura', upload.fields([{ name: 'imagem', maxCount: 1 }, { name: 'audio', maxCount: 1 }]), async (req, res) => {
   try {
-    const { usuario, nome_figura, audio, figura_favorita } = req.body;
+    const { nome, figura_favorita } = req.body;
     const categoriaId = req.params.categoriaId;
-    const imagem = req.file.filename;
+    const imagemPath = req.files['imagem'][0].filename;
+    const audioPath = req.files['audio'][0].filename;
 
     const novaFigura = new Figura({
-      usuario,
-      imagem,
-      nome_figura,
-      audio,
+      nome,
+      imagem: imagemPath,
+      audio: audioPath,
       figura_favorita
     });
 
@@ -1017,7 +1041,7 @@ router.delete('/usuario/categoria/:categoriaId/figura/:figuraId', async (req, re
   }
 });
 
-router.get('/usuario/categoria/:categoriaId/figuras', async (req, res) => {
+router.get('/usuario/categoria/:categoriaId/figura', async (req, res) => {
   try {
     const categoriaId = req.params.categoriaId;
 
@@ -1035,48 +1059,58 @@ router.get('/usuario/categoria/:categoriaId/figuras', async (req, res) => {
   }
 });
 
-
-
-  function verifyToken(req,res,next){
-    const bearerHeader = req.headers['authorization'];
-    if(bearerHeader){
-        const bearer = bearerHeader.split(' ');
-        const bearerToken = bearer[1];
-        req.token = bearerToken;
-
-        next();
-    }else{
-        res.sendStatus(401);
-    }
+router.get('/image/:filename', async (req, res) => {
+  try{
+    let path = require('path');
+    res.sendFile(path.join(__dirname, `/uploads/${req.params.filename}`));
+  }
+  catch (error){
+    res.status(400).json({ message: error.message });
   }
 
-  function tokenChallenge(token, res){
-    jwt.verify(token, 'secretKey', (err, authData) => {
-      if (err)
-        return !!err;
-    })
+})
+
+
+function verifyToken(req,res,next){
+  const bearerHeader = req.headers['authorization'];
+  if(bearerHeader){
+      const bearer = bearerHeader.split(' ');
+      const bearerToken = bearer[1];
+      req.token = bearerToken;
+
+      next();
+  }else{
+      res.sendStatus(401);
   }
+}
 
-  function verifyToken(req,res,next){
-    const bearerHeader = req.headers['authorization'];
-    if(bearerHeader){
-        const bearer = bearerHeader.split(' ');
-        const bearerToken = bearer[1];
-        req.token = bearerToken;
+function tokenChallenge(token, res){
+  jwt.verify(token, 'secretKey', (err, authData) => {
+    if (err)
+      return !!err;
+  })
+}
 
-        next();
-    }else{
-        res.sendStatus(401);
-    }
+function verifyToken(req,res,next){
+  const bearerHeader = req.headers['authorization'];
+  if(bearerHeader){
+      const bearer = bearerHeader.split(' ');
+      const bearerToken = bearer[1];
+      req.token = bearerToken;
+
+      next();
+  }else{
+      res.sendStatus(401);
   }
+}
 
-  function tokenChallenge(token, res){
-    jwt.verify(token, 'secretKey', (err, authData) => {
-      if (err)
-        return !!err;
-    })
-  }
+function tokenChallenge(token, res){
+  jwt.verify(token, 'secretKey', (err, authData) => {
+    if (err)
+      return !!err;
+  })
+}
 
-  app.use('/', router);
-  app.listen(3000)
-  console.log("Servidor funcionando ")
+app.use('/', router);
+app.listen(3000)
+console.log("Servidor funcionando ")

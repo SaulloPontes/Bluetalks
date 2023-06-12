@@ -1,11 +1,13 @@
 const categoryComponent = (id, name, imageUrl) => `
-<a href="/category/${id}">
-                  <img src="${imageUrl}" class="border border-dark mt-2 rounded"
-                    width="100%" alt="">
-                </a>
-                <div class="h5 font-open-sans text-center my-3">
-                    ${name}
-                </div>`;
+<div class="shadow border p-1 col rounded" onclick="(function() { window.location.href = '../figuras/figuras.html#${id}' })()" style="min-width: 200px; max-width: 200px;">
+    <a>
+        <img src="${imageUrl}" class="img-category img-fluid mt-2"
+        width="100%" alt="">
+    </a>
+    <div class="h5 font-open-sans text-center my-3">
+        ${name}
+    </div>
+</div>`;
 
 class Category extends HTMLElement{
     data = {};

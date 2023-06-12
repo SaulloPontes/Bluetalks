@@ -1,11 +1,14 @@
-const figureElement = (id, name, imageUrl) => `
-<a href="/category/${id}">
-                  <img src="${imageUrl}" class="border border-dark mt-2 rounded"
-                    width="100%" alt="">
-                </a>
-                <div class="h5 font-open-sans text-center my-3">
-                    ${name}
-                </div>`;
+const figureElement = (id, name, imageUrl, audioUrl) => `
+<div class="shadow mb-4 border p-1 col rounded" style="min-width: 200px; max-width: 200px;" onclick="(function(){ document.getElementById('${id}-audio').play()})()">
+    <a>
+        <img class="img-category img-fluid mt-2" src="${imageUrl}" class="border border-dark mt-2 rounded"
+        width="100%" alt="">
+    </a>
+    <div class="h5 font-open-sans text-center my-3">
+        ${name}
+    </div>
+    <audio id=${id}-audio src=${audioUrl}></audio>
+</div>`;
 
 class Figure extends HTMLElement{
     data = {};
@@ -15,10 +18,9 @@ class Figure extends HTMLElement{
     }
 
     connectedCallback(){
-        this.innerHTML = headerComponent;
         this.setData();
         this.setStyle();
-        this.innerHTML = figureElement(this.data.id, this.data.name, this.data.image);
+        this.innerHTML = figureElement(this.data.id, this.data.name, this.data.image, this.data.audio);
     }
     
     setStyle(){
@@ -35,6 +37,8 @@ class Figure extends HTMLElement{
             this.data.image = "../../assets/Imagens/blu.JPG";
         if(this.hasAttribute('name'))
             this.data.name = this.getAttribute('name');
+        if(this.hasAttribute('audio'))
+            this.data.audio = this.getAttribute('audio');
     }
 }
 

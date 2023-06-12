@@ -110,3 +110,25 @@ html {
 .modal-backdrop {
     display: none;
 }
+
+.img-thumbnail {
+    width: 85px;
+    height: 85px;
+    object-fit: cover;
+}
+
+.img-category {
+    width: 85px;
+    height: 100px;
+}
+
+.div-top {
+    position: relative;
+    top: 50px;
+}
+
+.img-large {
+    min-height: 125px;
+    min-width: 125px;
+    object-fit: cover;
+}

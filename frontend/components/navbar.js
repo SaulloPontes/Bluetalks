@@ -1,25 +1,25 @@
 const navbarElement = () => `
 <div class="position-sticky pt-4 ps-0 ms-0 sidebar-sticky" style="top: 50px">
 <ul class="nav flex-column">
-  <li class="nav-item">
+  <li class="nav-item mt-2">
     <a id="inicio-opt" class="nav-config nav-link d-flex align-items-center gap-2" href="../../pages/index/index.html">
       <img class="img-w" src="../../assets/Imagens/User.svg" alt="Icone do início">
       Início
     </a>
   </li>
-  <li class="nav-item">
+  <li class="nav-item mt-2">
     <a id="categorias-opt" class="nav-config nav-link d-flex align-items-center gap-2" href="../../pages/categorias/categorias.html">
       <img class="img-w" src="../../assets/Imagens/Category.svg" alt="">
       Categorias
     </a>
   </li>
-  <li class="nav-item">
+  <li class="nav-item mt-2">
     <a id="perfis-opt" class="nav-config nav-link d-flex align-items-center gap-2" href="../../pages/perfis/perfis.html">
       <img class="img-w" src="../../assets/Imagens/Users.svg" alt="">
       Perfis
     </a>
   </li>
-  <li class="nav-item">
+  <li class="nav-item mt-2">
     <a id="configuracoes-opt" class="nav-config nav-link d-flex align-items-center gap-2" href="../../pages/configuracoes/configuracoes.html">
       <img class="img-w" src="../../assets/Imagens/Settings.svg" alt="">
       Configurações
@@ -40,7 +40,8 @@ class Navbar extends HTMLElement {
         this.setData();
         this.setElementStyle();
         this.innerHTML = navbarElement();
-        document.getElementById(`${this.data.current}-opt`).classList.add("fw-bold");
+        if (this.data.current)
+          document.getElementById(`${this.data.current}-opt`).classList.add("fw-bold");
     }
 
     setElementStyle() {

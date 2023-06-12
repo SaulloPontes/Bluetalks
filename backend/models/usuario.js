@@ -8,12 +8,13 @@
       nome: { type: String, required: true,},
       email: { type: String, required: true },
       senha :{ type: String, required: true },
-      observacao :{ type: String, required: true},
-      foto :{ type: String, required: true},
-      apelido : { type: String, required: true },
+      observacao :{ type: String },
+      foto :{ type: String },
+      apelido : { type: String },
       figuras: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Figura' }],
-      contatos : [{ type: mongoose.Schema.Types.ObjectId, ref: 'ContatoUsuario' }],
-      categorias : [{type: mongoose.Schema.Types.ObjectId,ref:'Categoria'}]
+      contatos : [{ type: String }],
+      categorias : [{type: mongoose.Schema.Types.ObjectId,ref:'Categoria'}],
+      associados: [{type: mongoose.Schema.Types.ObjectId,ref:'Usuario'}],
     },{timestamps: true});
 
 
