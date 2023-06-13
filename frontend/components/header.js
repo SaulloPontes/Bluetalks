@@ -17,7 +17,7 @@ headerComponent = (photoUrl) => `<header class="navbar navbar-expand-sm bg-body-
                   </a>
                   <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                     <li><a class="dropdown-item" href="#">Perfil</a></li>
-                    <li><a class="dropdown-item" href="#">Sair</a></li>
+                    <li><a class="dropdown-item" href="../login/login.html">Sair</a></li>
                   </ul>
                 </div>
               </div>

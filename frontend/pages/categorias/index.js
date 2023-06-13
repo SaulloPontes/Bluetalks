@@ -52,7 +52,9 @@ function handleEditCategory(event, id){
     
       const url = `${apiUrl}/usuario/${localStorage.getItem('userId')}/categoria/${id}`;
     
-      axios.put(url, formData);
+      axios.put(url, formData).then(response => {
+        window.location.reload();
+      });
   }
 }
 

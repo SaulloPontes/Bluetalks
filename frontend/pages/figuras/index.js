@@ -24,7 +24,9 @@ function postNewFigura(id){
 
   const url = `${apiUrl}/usuario/categoria/${categoryId}/figura`;
 
-  axios.post(url, formData);
+  axios.post(url, formData).then(response => {
+    window.location.reload();
+  });;
 }
 
 function handleEditFigure(event, id){
