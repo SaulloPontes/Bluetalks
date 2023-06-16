@@ -4,6 +4,7 @@ function setData() {
         localStorage.setItem("user", JSON.stringify(userData));
         document.getElementById('name').textContent = userData.nome;
         document.getElementById('email').textContent = userData.email;
+        document.getElementById('userId').textContent = "Id pessoal: " + userData._id;
         document.getElementById('photo').src = getPhotoUrl(userData.foto);
     
         document.getElementById('editNome').value = userData.nome;

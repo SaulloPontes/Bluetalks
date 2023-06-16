@@ -55,4 +55,13 @@ function handleEditFigure(event, id){
         window.location.reload();
     }
 }
+
+function handleDeleteFigure(event, id){
+    event.stopPropagation();
+
+    const url = `${apiUrl}/usuario/categoria/${categoryId}/figura/${id}`;
+    axios.delete(url).then(response => {
+        window.location.reload();
+    });
+}
 setData();

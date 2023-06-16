@@ -167,7 +167,6 @@ router.put('/usuario/:id', upload.single('foto'), async (req, res) => {
       usuario.foto = fotoPerfil;
     }
 
-    console.log(body)
     for (const property in body) {
       if (!!usuario[property]){
         usuario[property] = body[property];
@@ -176,7 +175,6 @@ router.put('/usuario/:id', upload.single('foto'), async (req, res) => {
         usuario.observacao = body[property]
     }
 
-    console.log(usuario)
     await usuario.save();
     res.json(usuario);
   } catch (error) {
@@ -913,23 +911,23 @@ router.get('/usuario/:usuarioId/categoria/:nome_categoria', async (req, res) => 
 });
 
 
-router.delete('/usuario/:usuarioId/categoria/:nome_categoria', async (req, res) => {
+router.delete('/usuario/:usuarioId/categoria/:categoriaId', async (req, res) => {
   try {
     const usuarioId = req.params.usuarioId;
-    const nomeCategoria = req.params.nome_categoria;
+    const categoriaId = req.params.categoriaId;
     
     const usuario = await Usuario.findById(usuarioId).populate('categorias');
     if (!usuario) {
       return res.status(404).json({ error: 'Usuário não encontrado' });
     }
     
-    const categoria = usuario.categorias.find(categoria => categoria.nome_categoria === nomeCategoria);
+    const categoria = await Categoria.findById(categoriaId);
     if (!categoria) {
       return res.status(404).json({ error: 'Categoria não encontrada' });
     }
     
    
-    usuario.categorias = usuario.categorias.filter(categoria => categoria.nome_categoria !== nomeCategoria);
+    usuario.categorias = usuario.categorias.filter(categoria => categoria._id !== categoriaId);
     await usuario.save();
     
    
@@ -1048,7 +1046,7 @@ router.delete('/usuario/categoria/:categoriaId/figura/:figuraId', async (req, re
       return res.status(404).json({ error: 'Figura não encontrada' });
     }
 
-    await figura.remove();
+    await Figura.findByIdAndDelete(figuraId);
 
     categoria.figuras = categoria.figuras.filter(id => id !== figuraId);
     await categoria.save();

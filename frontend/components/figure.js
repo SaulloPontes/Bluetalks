@@ -1,7 +1,10 @@
 const figureElement = (id, name, imageUrl, audioUrl) => `
 <div class="shadow mb-4 border p-1 col rounded" style="min-width: 200px; max-width: 200px;" onclick="handleOnFigureClick('${id}-audio')">
-    <div class="icon-badge-container rounded" onclick="handleEditFigure(event, '${id}')">
+    <div class="icon-badge icon-badge-top-right-container rounded" onclick="handleEditFigure(event, '${id}')">
         <img class="img-w" src="../../assets/Imagens/Edit.svg" alt="">
+    </div>
+    <div class="icon-badge icon-badge-bottom-right-container rounded" onclick="handleDeleteFigure(event, '${id}')">
+        <img class="img-w" src="../../assets/Imagens/Trash.svg" alt="">
     </div>
     <a>
         <img class="img-category img-fluid mt-2" src="${imageUrl}" class="border border-dark mt-2 rounded"
@@ -33,6 +36,7 @@ class Figure extends HTMLElement{
     setStyle(){
         this.classList.add("col");
         this.classList.add("text-center");
+        this.classList.add("clickable");
     }
 
     setData(){

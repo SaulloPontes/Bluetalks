@@ -1,7 +1,10 @@
 const categoryComponent = (id, name, imageUrl) => `
 <div class="shadow border p-1 col rounded" onclick="(function() { window.location.href = '../figuras/figuras.html#${id}' })()" style="min-width: 200px; max-width: 200px;">
-    <div class="icon-badge-container rounded" onclick="handleEditCategory(event, '${id}')">
+    <div class="icon-badge icon-badge-top-right-container rounded" onclick="handleEditCategory(event, '${id}')">
         <img class="img-w" src="../../assets/Imagens/Edit.svg" alt="">
+    </div>
+    <div class="icon-badge icon-badge-bottom-right-container rounded" onclick="handleDeleteCategory(event, '${id}')">
+        <img class="img-w" src="../../assets/Imagens/Trash.svg" alt="">
     </div>
     <a>
         <img src="${imageUrl}" class="img-category img-fluid mt-2"
@@ -28,6 +31,7 @@ class Category extends HTMLElement{
     setStyle(){
         this.classList.add("col");
         this.classList.add("text-center");
+        this.classList.add("clickable");
     }
 
     setData(){

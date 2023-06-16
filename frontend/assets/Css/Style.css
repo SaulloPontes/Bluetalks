@@ -29,6 +29,7 @@ html {
 
 .img-w {
     max-width: 20px;
+    object-fit: cover;
 }
 
 .img-perfil-w {
@@ -133,9 +134,34 @@ html {
     object-fit: cover;
 }
 
-.icon-badge-container {
+.clickable {
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.clickable:hover {
+    scale: 1.05;
+    transition: 0.1s;
+}
+.icon-badge:hover {
+    scale: 1.3;
+    transition: 0.3s;
+}
+.icon-badge-top-right-container {
     position: relative;
     left: 80%;
+    height: 30px;
+    width: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.icon-badge-bottom-right-container {
+    position: relative;
+    left: 80%;
+    top: 9.5rem;
+    bottom: 0;
     height: 30px;
     width: 30px;
     display: flex;

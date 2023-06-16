@@ -58,4 +58,14 @@ function handleEditCategory(event, id){
   }
 }
 
+function handleDeleteCategory(event, id){
+  event.stopPropagation();
+
+  const url = `${apiUrl}/usuario/${localStorage.getItem('userId')}/categoria/${id}`;
+
+  axios.delete(url).then(response => {
+    window.location.reload();
+  });
+}
+
 setCategorias();
