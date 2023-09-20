@@ -12,7 +12,7 @@ const CategoriaFigura = require('./models/categoriaFigura')
 const Figura = require('./models/figura')
 const fs = require('fs');
 
-const mongoURI = 'mongodb+srv://saulopontes:sauloPontesBlue@clusterbluetalks.kd8yiz7.mongodb.net/blueTalksDB';
+const mongoURI = 'mongodb+srv://webapi:1IgqEo354u8u7O2j@webapi.lq8x7go.mongodb.net/?retryWrites=true&w=majority';
 const jwtSECRET = "bluetalks";
 
 const options = {
