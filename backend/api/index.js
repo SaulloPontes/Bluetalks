@@ -40,6 +40,7 @@ app.use(express.json());
 app.use('/uploads', express.static('uploads'));
 
 router.get('/', (req, res) => res.json({ message: 'Funcionando' }));
+router.get('/check', (req, res) => res.sendStatus(200));
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -64,7 +65,7 @@ const upload = multer({ storage: storage });
 router.post('/usuario', upload.single('foto'), async (req, res) => {
   try {
     const { nome, email, senha, observacao, apelido } = req.body;
-    const fotoPerfil = req.file.filename;
+    const fotoPerfil = req.file?.filename;
     const novoUsuario = new Usuario({ nome, email, senha, observacao, foto: fotoPerfil, apelido });
     await novoUsuario.save();
     res.status(201).json(novoUsuario);
@@ -112,7 +113,7 @@ router.post('/usuario/login', async (req, res) => {
     const { email, senha } = req.body;
     const usuario = await Usuario.findOne({ email });
     if (usuario) {
-      const result = bcrypt.compare(senha, usuario.senha);
+      const result = await bcrypt.compare(senha, usuario.senha);
       if (result) {
         const token = jwt.sign({ email: usuario.email }, jwtSECRET);
         res.json({ token, usuario });
@@ -1129,7 +1130,7 @@ function tokenChallenge(token, res){
 }
 
 app.use('/', router);
-app.listen(3000,function () {
-  console.log("Server started. Go to http://localhost:3000/");
+app.listen(3723,function () {
+  console.log("Server started. Go to http://localhost:3723/");
 });
 module.exports = app;
