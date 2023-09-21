@@ -1,10 +1,8 @@
-import { use, listen } from "./app";
-import routes from "./routes/router";
+const app = require("./api/app");
 
-use("/", routes);
 /* app.use("/api/", routes);  //for API backend*/
 
 //start server locally
-listen(3000,function () {
+app.listen(3000,function () {
     console.log("Server started. Go to http://localhost:3000/");
 });
