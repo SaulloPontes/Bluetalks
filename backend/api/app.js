@@ -4,12 +4,12 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 const multer = require('multer');
-const Usuario = require('./models/usuario');
-const UsuarioResponsavel = require('./models/usuarioResponsavel')
-const ContatoUsuario = require('./models/contato')
-const Categoria = require('./models/categoria')
-const CategoriaFigura = require('./models/categoriaFigura')
-const Figura = require('./models/figura')
+const Usuario = require('../models/usuario');
+const UsuarioResponsavel = require('../models/usuarioResponsavel')
+const ContatoUsuario = require('../models/contato')
+const Categoria = require('../models/categoria')
+const CategoriaFigura = require('../models/categoriaFigura')
+const Figura = require('../models/figura')
 const fs = require('fs');
 
 const mongoURI = 'mongodb+srv://webapi:1IgqEo354u8u7O2j@webapi.lq8x7go.mongodb.net/?retryWrites=true&w=majority';
