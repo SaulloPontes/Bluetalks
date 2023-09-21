@@ -1128,9 +1128,8 @@ function tokenChallenge(token, res){
   })
 }
 
-app.use('/', router);
+app.use('/api', router);
 app.listen(3000,function () {
   console.log("Server started. Go to http://localhost:3000/");
 });
-
 module.exports = app;
