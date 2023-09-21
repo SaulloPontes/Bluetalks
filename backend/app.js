@@ -1129,6 +1129,4 @@ function tokenChallenge(token, res){
 }
 
 app.use('/', router);
-app.listen(3000)
-console.log("Servidor funcionando ")
 module.exports = app;
