@@ -5,7 +5,7 @@ const FiguraSchema = new mongoose.Schema({
     imagem: { type: String, required: true },
     nome: { type: String, required: true },
     audio :  { type: String, required: true },
-    figura_favorita : { type: Boolean, required: false }
+    favoritada : { type: Boolean, required: false }
   },{timestamps: true});
 
 

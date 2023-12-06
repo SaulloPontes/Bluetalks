@@ -77,12 +77,12 @@ router.post('/usuario', upload.single('foto'), async (req, res) => {
 
 
 router.get('/usuario', verifyToken, async (req, res) => {
-  if(tokenChallenge(req.token, res))
-        return res.sendStatus(401);
+  if (tokenChallenge(req.token, res))
+    return res.sendStatus(401);
 
-    try {
-      const usuarios = await Usuario.find();
-      res.json(usuarios);
+  try {
+    const usuarios = await Usuario.find();
+    res.json(usuarios);
   } catch (error) {
     console.error('Erro ao obter usuários:', error);
     res.status(500).json({ message: 'Erro ao obter usuários' });
@@ -91,17 +91,17 @@ router.get('/usuario', verifyToken, async (req, res) => {
 
 
 router.get('/usuario/:id', verifyToken, async (req, res) => {
-  if(tokenChallenge(req.token, res))
-        return res.sendStatus(401);
+  if (tokenChallenge(req.token, res))
+    return res.sendStatus(401);
 
-    try {
-      const id = req.params.id;
-      const usuario = await Usuario.findById(id);
-      if (!usuario) {
-        res.status(404).json({ message: 'Usuário não encontrado' });
-        return;
-      }
-      res.json(usuario);
+  try {
+    const id = req.params.id;
+    const usuario = await Usuario.findById(id);
+    if (!usuario) {
+      res.status(404).json({ message: 'Usuário não encontrado' });
+      return;
+    }
+    res.json(usuario);
   } catch (error) {
     console.error('Erro ao obter usuário:', error);
     res.status(500).json({ message: 'Erro ao obter usuário' });
@@ -117,11 +117,11 @@ router.post('/usuario/login', async (req, res) => {
       if (result) {
         const token = jwt.sign({ email: usuario.email }, jwtSECRET);
         res.json({ token, usuario });
-      } 
+      }
       else {
         res.status(400).json({ error: "Senha inválida" });
       }
-    } 
+    }
     else {
       res.status(400).json({ error: "Email inválido" });
     }
@@ -131,21 +131,21 @@ router.post('/usuario/login', async (req, res) => {
 })
 
 router.get('/usuario/:id/foto', verifyToken, async (req, res) => {
-  if(tokenChallenge(req.token, res))
-        return res.sendStatus(401);
+  if (tokenChallenge(req.token, res))
+    return res.sendStatus(401);
 
-    try {
-      const id = req.params.id;
-      const usuario = await Usuario.findById(id);
-      if (!usuario) {
-        res.status(404).json({ message: 'Usuário não encontrado' });
-        return;
-      }
-      const fotoPerfil = usuario.foto;
-      const caminhoFoto = 'uploads/' + fotoPerfil;
-      const foto = fs.readFileSync(caminhoFoto);
-      res.set('Content-Type', 'image/jpeg');
-      res.send(foto);
+  try {
+    const id = req.params.id;
+    const usuario = await Usuario.findById(id);
+    if (!usuario) {
+      res.status(404).json({ message: 'Usuário não encontrado' });
+      return;
+    }
+    const fotoPerfil = usuario.foto;
+    const caminhoFoto = 'uploads/' + fotoPerfil;
+    const foto = fs.readFileSync(caminhoFoto);
+    res.set('Content-Type', 'image/jpeg');
+    res.send(foto);
   } catch (error) {
     console.error('Erro ao obter a foto do usuário:', error);
     res.status(500).json({ message: 'Erro ao obter a foto do usuário' });
@@ -169,7 +169,7 @@ router.put('/usuario/:id', upload.single('foto'), async (req, res) => {
     }
 
     for (const property in body) {
-      if (!!usuario[property]){
+      if (!!usuario[property]) {
         usuario[property] = body[property];
       }
       else if (property == "observacao")
@@ -185,8 +185,8 @@ router.put('/usuario/:id', upload.single('foto'), async (req, res) => {
 });
 
 router.delete('/usuario/:id', verifyToken, async (req, res) => {
-  if(tokenChallenge(req.token, res))
-        return res.sendStatus(401);
+  if (tokenChallenge(req.token, res))
+    return res.sendStatus(401);
 
   try {
     const id = req.params.id;
@@ -208,7 +208,7 @@ router.delete('/usuario/:id', verifyToken, async (req, res) => {
 // API adicionando figuras aos usuarios
 
 router.get('/figura/:figuraId', verifyToken, async (req, res) => {
-  if(tokenChallenge(req.token, res))
+  if (tokenChallenge(req.token, res))
     return res.sendStatus(401);
 
   try {
@@ -220,7 +220,7 @@ router.get('/figura/:figuraId', verifyToken, async (req, res) => {
 
     res.status(200).json(figura);
   }
-  catch (error){
+  catch (error) {
     console.error('Erro ao recuperar:', error);
     res.status(500).json({ message: 'Erro interno do servidor' });
   }
@@ -229,16 +229,16 @@ router.get('/figura/:figuraId', verifyToken, async (req, res) => {
 router.get('/usuario/:usuarioId/figuras', verifyToken, async (req, res) => {
   const usuarioId = req.params.usuarioId;
 
-  if(tokenChallenge(req.token, res))
+  if (tokenChallenge(req.token, res))
     return res.sendStatus(401);
 
-    try {
-      const usuario = await Usuario.findById(usuarioId).populate('figuras');
-      if (!usuario) {
-        return res.status(404).json({ message: 'Usuário não encontrado' });
-      }
+  try {
+    const usuario = await Usuario.findById(usuarioId).populate('figuras');
+    if (!usuario) {
+      return res.status(404).json({ message: 'Usuário não encontrado' });
+    }
 
-      res.status(200).json(usuario.figuras);
+    res.status(200).json(usuario.figuras);
   } catch (error) {
     console.error('Erro ao obter as figuras:', error);
     res.status(500).json({ message: 'Erro interno do servidor' });
@@ -246,12 +246,14 @@ router.get('/usuario/:usuarioId/figuras', verifyToken, async (req, res) => {
 });
 
 // Rota para adicionar uma figura a um usuário
-router.post('/usuario/:usuarioId/figura', upload.fields([{ name: 'imagem', maxCount: 1 }, { name: 'audio', maxCount: 1 }]), async (req, res) => {
-  const usuarioId = req.params.usuarioId;
+router.post('/figura', verifyToken, upload.fields([{ name: 'imagem', maxCount: 1 }, { name: 'audio', maxCount: 1 }]), async (req, res) => {
+  const tokenData = tokenChallenge(req.token, res);
+  if (!tokenData || tokenData.message)
+    return res.sendStatus(401);
   const { nome_figura, figura_favorita } = req.body;
 
   try {
-    const usuario = await Usuario.findById(usuarioId);
+    const usuario = await Usuario.findOne({ email: tokenData.email });
     if (!usuario) {
       return res.status(404).json({ message: 'Usuário não encontrado' });
     }
@@ -262,9 +264,9 @@ router.post('/usuario/:usuarioId/figura', upload.fields([{ name: 'imagem', maxCo
     const figura = new Figura({
       usuario: usuario._id,
       imagem: imagemPath,
-      nome_figura,
+      nome: nome_figura,
       audio: audioPath,
-      figura_favorita
+      favoritada: figura_favorita === 'true'
     });
 
     await figura.save();
@@ -284,8 +286,8 @@ router.delete('/usuario/:usuarioId/figura/:figuraId', verifyToken, async (req, r
   const usuarioId = req.params.usuarioId;
   const figuraId = req.params.figuraId;
 
-  if(tokenChallenge(req.token, res))
-        return res.sendStatus(401);
+  if (tokenChallenge(req.token, res))
+    return res.sendStatus(401);
 
   try {
     const usuario = await Usuario.findById(usuarioId);
@@ -370,8 +372,8 @@ router.put('/usuario/:usuarioId/figura/:figuraId', upload.fields([{ name: 'image
 router.delete('/usuario/:usuarioId/figuras', verifyToken, async (req, res) => {
   const usuarioId = req.params.usuarioId;
 
-  if(tokenChallenge(req.token, res))
-        return res.sendStatus(401);
+  if (tokenChallenge(req.token, res))
+    return res.sendStatus(401);
 
   try {
     const usuario = await Usuario.findById(usuarioId);
@@ -411,8 +413,8 @@ router.delete('/usuario/:usuarioId/figura/nome/:nomeFigura', verifyToken, async 
   const usuarioId = req.params.usuarioId;
   const nomeFigura = req.params.nomeFigura;
 
-  if(tokenChallenge(req.token, res))
-        return res.sendStatus(401);
+  if (tokenChallenge(req.token, res))
+    return res.sendStatus(401);
 
   try {
     const usuario = await Usuario.findById(usuarioId);
@@ -497,25 +499,25 @@ router.put('/usuario/:usuarioId/figura/nome/:nomeFigura', upload.fields([{ name:
 // Relação Usuário e usuário
 
 router.get('/usuario/:usuarioId/associados', verifyToken, async (req, res) => {
-  if(tokenChallenge(req.token, res))
+  if (tokenChallenge(req.token, res))
     return res.sendStatus(401);
 
-  try{
+  try {
     const usuarioId = req.params.usuarioId;
     const usuarioData = await Usuario.findById(usuarioId).populate('associados');
 
     return res.json(usuarioData.associados);
   }
-  catch(error){
+  catch (error) {
     res.status(400).json({ message: error.message });
   }
 });
 
 router.post('/usuario/:usuarioId/associados/:associadoId', verifyToken, async (req, res) => {
-  if(tokenChallenge(req.token, res))
+  if (tokenChallenge(req.token, res))
     return res.sendStatus(401);
 
-  try{
+  try {
     const usuarioId = req.params.usuarioId;
     const usuario = await Usuario.findById(usuarioId);
     if (!usuario) {
@@ -531,7 +533,7 @@ router.post('/usuario/:usuarioId/associados/:associadoId', verifyToken, async (r
     await usuario.save();
     return res.status(201).json({ message: 'Usuário associado com sucesso' });
   }
-  catch(error){
+  catch (error) {
     res.status(400).json({ message: error.message });
   }
 })
@@ -541,7 +543,7 @@ router.post('/usuario/:id/contato', verifyToken, async (req, res) => {
   const { numero, nome, relacao } = req.body;
   const usuarioId = req.params.id;
 
-  if(tokenChallenge(req.token, res))
+  if (tokenChallenge(req.token, res))
     return res.sendStatus(401);
 
   try {
@@ -570,8 +572,8 @@ router.post('/usuario/:id/contato', verifyToken, async (req, res) => {
 router.get('/usuario/:id/contatos', verifyToken, async (req, res) => {
   const usuarioId = req.params.id;
 
-  if(tokenChallenge(req.token, res))
-        return res.sendStatus(401);
+  if (tokenChallenge(req.token, res))
+    return res.sendStatus(401);
 
   try {
     const usuario = await Usuario.findById(usuarioId).populate('contatos');
@@ -808,30 +810,32 @@ router.get('/usuario/dependente/:nome', async (req, res) => {
 // categorias usuario 
 
 // Rota POST para adicionar uma nova categoria para um usuário
-router.post('/usuario/:usuarioId/categoria', upload.single('imagem'), async (req, res) => {
+router.post('/categoria', verifyToken, upload.single('imagem'), async (req, res) => {
   try {
+    const tokenData = tokenChallenge(req.token, res);
+    if(!tokenData || tokenData.message)
+      return res.sendStatus(401);
+
     const { nome } = req.body;
-    const usuarioId = req.params.usuarioId;
     const imagem = req.file.filename;
-    
+
+    const user = await Usuario.findOne({ email: tokenData.email });
     const novaCategoria = new Categoria({
-      criador_categoria: usuarioId,
+      criador_categoria: user.id,
       imagem,
       nome,
       figuras: []
     });
-    
-    const usuario = await Usuario.findById(usuarioId);
-    if (!usuario) {
+
+    if (!user) {
       return res.status(404).json({ error: 'Usuário não encontrado' });
     }
-    
-    novaCategoria.criador_categoria = usuario;
+
     await novaCategoria.save();
-    
-    usuario.categorias.push(novaCategoria);
-    await usuario.save();
-    
+
+    user.categorias.push(novaCategoria);
+    await user.save();
+
     res.status(201).json(novaCategoria);
   } catch (error) {
     console.error('Erro ao adicionar categoria:', error);
@@ -846,22 +850,22 @@ router.put('/usuario/:usuarioId/categoria/:categoriaId', upload.single('imagem')
     const usuarioId = req.params.usuarioId;
     const categoriaId = req.params.categoriaId;
     const imagem = req.file?.filename;
-    
+
     const usuario = await Usuario.findById(usuarioId);
     if (!usuario) {
       return res.status(404).json({ error: 'Usuário não encontrado' });
     }
-    
+
     const categoria = await Categoria.findById(categoriaId);
     if (!categoria) {
       return res.status(404).json({ error: 'Categoria não encontrada' });
     }
 
-    if(nome)
+    if (nome)
       categoria.nome = nome;
-    if(imagem)
+    if (imagem)
       categoria.imagem = imagem;
-    
+
     await categoria.save();
     res.json(categoria);
   } catch (error) {
@@ -874,14 +878,14 @@ router.put('/usuario/:usuarioId/categoria/:categoriaId', upload.single('imagem')
 router.get('/usuario/:usuarioId/categoria', async (req, res) => {
   try {
     const usuarioId = req.params.usuarioId;
-    
+
     const usuario = await Usuario.findById(usuarioId).populate('categorias');
     if (!usuario) {
       return res.status(404).json({ error: 'Usuário não encontrado' });
     }
-    
+
     const categorias = usuario.categorias;
-    
+
     res.json(categorias);
   } catch (error) {
     console.error('Erro ao obter categorias:', error);
@@ -893,7 +897,7 @@ router.get('/usuario/:usuarioId/categoria/:nome_categoria', async (req, res) => 
   try {
     const usuarioId = req.params.usuarioId;
     const nomeCategoria = req.params.nome_categoria;
-    
+
     const usuario = await Usuario.findById(usuarioId).populate({
       path: 'categorias',
       match: { nome_categoria: nomeCategoria }
@@ -901,9 +905,9 @@ router.get('/usuario/:usuarioId/categoria/:nome_categoria', async (req, res) => 
     if (!usuario) {
       return res.status(404).json({ error: 'Usuário não encontrado' });
     }
-    
+
     const categorias = usuario.categorias.filter(categoria => categoria.nome_categoria === nomeCategoria);
-    
+
     res.json(categorias);
   } catch (error) {
     console.error('Erro ao obter categorias:', error);
@@ -916,24 +920,24 @@ router.delete('/usuario/:usuarioId/categoria/:categoriaId', async (req, res) => 
   try {
     const usuarioId = req.params.usuarioId;
     const categoriaId = req.params.categoriaId;
-    
+
     const usuario = await Usuario.findById(usuarioId).populate('categorias');
     if (!usuario) {
       return res.status(404).json({ error: 'Usuário não encontrado' });
     }
-    
+
     const categoria = await Categoria.findById(categoriaId);
     if (!categoria) {
       return res.status(404).json({ error: 'Categoria não encontrada' });
     }
-    
-   
+
+
     usuario.categorias = usuario.categorias.filter(categoria => categoria._id !== categoriaId);
     await usuario.save();
-    
-   
+
+
     await Categoria.findByIdAndDelete(categoria._id);
-    
+
     res.json({ message: 'Categoria excluída com sucesso' });
   } catch (error) {
     console.error('Erro ao excluir categoria:', error);
@@ -994,7 +998,7 @@ router.put('/usuario/categoria/:categoriaId/figura/:figuraId', upload.fields([{ 
       return res.status(404).json({ error: 'Figura não encontrada' });
     }
 
-    if(nome)
+    if (nome)
       figura.nome = nome;
     if (audioPath)
       figura.audio = audioPath;
@@ -1077,60 +1081,88 @@ router.get('/usuario/categoria/:categoriaId/figura', async (req, res) => {
   }
 });
 
+router.get('/figuras', verifyToken, async (req, res) => {
+  try {
+    const tokenData = tokenChallenge(req.token, res);
+    if (!tokenData || tokenData.message)
+      return res.sendStatus(401);
+    const search = req.query.search;
+
+    const user = await Usuario.findOne({ email: tokenData.email }).populate('figuras');
+
+    res.json(user.figuras.filter(figura => figura.nome.toLowerCase().includes(search.toLowerCase())));
+  }
+  catch (error) {
+    res.status(500).json({ error: 'Erro ao obter figuras' });
+  }
+})
+
+router.get('/categorias', verifyToken, async (req, res) => {
+  try {
+    const tokenData = tokenChallenge(req.token, res);
+    if (!tokenData || tokenData.message)
+      return res.sendStatus(401);
+
+    const user = await Usuario.findOne({ email: tokenData.email }).populate('categorias');
+
+    res.json(user.categorias)
+  }
+  catch (error) {
+    res.status(500).json({ error: 'Erro ao obter categorias' });
+  }
+})
+
+router.get('/figuras/favorite', verifyToken, async (req, res) => {
+  try {
+    const tokenData = tokenChallenge(req.token, res);
+    if (!tokenData || tokenData.message)
+      return res.sendStatus(400);
+
+    const user = await Usuario.findOne({ email: tokenData.email }).populate('figuras');
+
+    res.json(user.figuras.filter(figura => figura.favoritada));
+  }
+  catch (error) {
+    res.status(500).json({ error: 'Erro ao obter figuras' });
+  }
+})
+
 router.get('/image/:filename', async (req, res) => {
-  try{
+  try {
     let path = require('path');
     res.sendFile(path.join(__dirname, `/uploads/${req.params.filename}`));
   }
-  catch (error){
+  catch (error) {
     res.status(400).json({ message: error.message });
   }
-
 })
 
 
-function verifyToken(req,res,next){
-  const bearerHeader = req.headers['authorization'];
-  if(bearerHeader){
-      const bearer = bearerHeader.split(' ');
-      const bearerToken = bearer[1];
-      req.token = bearerToken;
-
-      next();
-  }else{
-      res.sendStatus(401);
-  }
-}
-
-function tokenChallenge(token, res){
-  jwt.verify(token, 'secretKey', (err, authData) => {
+function tokenChallenge(token, res) {
+  if (!token)
+    return undefined;
+  return jwt.verify(token, jwtSECRET, (err, authData) => {
     if (err)
-      return !!err;
+      return err;
+    return authData;
   })
 }
 
-function verifyToken(req,res,next){
+function verifyToken(req, res, next) {
   const bearerHeader = req.headers['authorization'];
-  if(bearerHeader){
-      const bearer = bearerHeader.split(' ');
-      const bearerToken = bearer[1];
-      req.token = bearerToken;
+  if ( bearerHeader ) {
+    const bearer = bearerHeader.split(' ');
+    const bearerToken = bearer[1];
+    req.token = bearerToken;
 
-      next();
-  }else{
-      res.sendStatus(401);
+    next();
+  } else {
+    res.sendStatus(401);
   }
-}
-
-function tokenChallenge(token, res){
-  jwt.verify(token, 'secretKey', (err, authData) => {
-    if (err)
-      return !!err;
-  })
 }
 
 app.use('/', router);
-app.listen(3723,function () {
+app.listen(3723, function () {
   console.log("Server started. Go to http://localhost:3723/");
 });
 module.exports = app;
